@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Plessis Yann - Enseignant APA</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="site-header">
+
+        <h1>Plessis Yann - Enseignant APA</h1>
+
+        <img
+            src="images/yann.jpg"
+            alt="Plessis Yann - Enseignant APA"
+            class="profile-photo"
+        >
+
+    </div>
+
+    <p class="intro">
+        Choisissez trois options ci-dessous avant de selectionner une zone du corps
+    </p>
+
+
+    <!-- =========================
+         CATÉGORIES
+    ========================== -->
+
+    <div class="category-buttons">
+
+       
+        <button
+            class="category-button"
+            onclick="changeCategory('renforcement', this)">
+            💪 Renforcement
+        </button>
+
+        <button
+            class="category-button"
+            onclick="changeCategory('etirements', this)">
+            🧘 Étirements
+        </button>
+
+         <button
+            class="category-button active"
+            onclick="changeCategory('mobilite', this)">
+            🏃 Mobilité
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         POSITIONS
+    ========================== -->
+
+    <div class="position-buttons">
+
+        <button
+            class="position-button active"
+            onclick="changePosition('debout', this)">
+            🧍 Debout
+        </button>
+
+        <button
+            class="position-button"
+            onclick="changePosition('assis', this)">
+            🪑 Assis
+        </button>
+
+        <button
+            class="position-button"
+            onclick="changePosition('sol', this)">
+            🧎 Au sol
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         FACE / DOS
+    ========================== -->
+
+    <div class="view-buttons">
+
+        <button
+            class="view-button active"
+            onclick="changeView('front', this)">
+            Face
+        </button>
+
+        <button
+            class="view-button"
+            onclick="changeView('back', this)">
+            Dos
+        </button>
+
+    </div>
+
+        <!-- =========================
+            ecriture 1/3 2/3 3/3
+        ========================== -->
+
+    <div id="progressIndicator">
+            0 / 3
+    </div>
+
+
+    <!-- =========================
+         CONTENU PRINCIPAL
+    ========================== -->
+
+    <div class="content">
+
+
+        <!-- =========================
+             PERSONNAGE
+        ========================== -->
+
+        <div class="body-container">
+
+
+            <!-- =========================
+                 VUE DE FACE
+            ========================== -->
+
+            <img
+                id="frontBody"
+                class="anatomy-body"
+                src="anatomie-front.svg"
+                alt="Silhouette anatomique masculine vue de face"
+            >
+            <!-- =========================
+                ZONE COU — FACE
+            ========================= -->
+
+            <div
+                class="body-zone front-zone zone-cou"
+                onclick="showExercises('Cou face')">
+            </div>
+
+            <!-- =========================
+                 ZONE PECTORAUX
+            ========================== -->
+
+            <div
+                class="body-zone front-zone zone-pectoraux"
+                onclick="showExercises('Pectoraux')">
+            </div>
+
+            <!-- =========================
+                ZONE OBLIQUES
+            ========================= -->
+
+            <div
+                class="body-zone front-zone zone-oblique-gauche"
+                onclick="showExercises('Obliques')">
+            </div>
+
+            <div
+                class="body-zone front-zone zone-oblique-droite"
+                onclick="showExercises('Obliques')">
+            </div>
+
+            <!-- =========================
+                 ZONE Abdos
+            ========================== -->
+
+            <div
+                class="body-zone front-zone zone-abdos"
+                onclick="showExercises('Abdominaux')">
+            </div>
+
+            <!-- =========================
+                 ZONE CUISSES
+            ========================= -->
+
+            <div
+                class="body-zone front-zone zone-cuisse-gauche"
+                onclick="showExercises('Cuisses')">
+            </div>
+
+            <div
+                class="body-zone front-zone zone-cuisse-droite"
+                onclick="showExercises('Cuisses')">
+            </div>
+
+            <!-- =========================
+                    ZONE TIBIAS
+            ========================= -->
+
+            <div
+                class="body-zone front-zone zone-tibia-gauche"
+                onclick="showExercises('Tibias')">
+            </div>
+
+            <div
+                class="body-zone front-zone zone-tibia-droite"
+                onclick="showExercises('Tibias')">
+            </div>
+            <!-- =========================
+                    ZONE ÉPAULES
+            ========================= -->
+
+            <div
+                class="body-zone front-zone zone-epaule-gauche"
+                onclick="showExercises('Épaules')">
+            </div>
+
+            <div
+                class="body-zone front-zone zone-epaule-droite"
+                onclick="showExercises('Épaules')">
+            </div>
+
+            <!-- =========================
+                    ZONE BICEPS
+            ========================= -->
+
+            <div
+                class="body-zone front-zone zone-biceps-gauche"
+                onclick="showExercises('Biceps')">
+            </div>
+
+            <div
+                class="body-zone front-zone zone-biceps-droite"
+                onclick="showExercises('Biceps')">
+            </div>
+
+            <!-- =========================
+                    ZONE AVANT-BRAS
+            ========================= -->
+
+            <div
+                class="body-zone front-zone zone-avant-bras-gauche"
+                onclick="showExercises('Avant-bras')">
+            </div>
+
+            <div
+                class="body-zone front-zone zone-avant-bras-droite"
+                onclick="showExercises('Avant-bras')">
+            </div>
+
+            <!-- =========================
+                VUE DE DOS
+            ========================= -->
+
+            <div class="back-container">
+
+            <img
+                 id="backBody"
+                 class="anatomy-body back-body"
+                src="anatomie-back.svg"
+                alt="Silhouette anatomique masculine vue de dos">
+
+            <!-- =========================
+            ZONE COU — DOS
+            ========================= -->
+
+            <div
+                class="body-zone back-zone zone-cou-dos"
+                onclick="showExercises('Cou dos')">
+            </div>
+
+            <!-- ÉPAULE GAUCHE — DOS -->
+            <div
+                class="body-zone back-zone zone-epaule-dos-gauche"
+                onclick="showExercises('Épaules')">
+            </div>
+
+            <!-- ÉPAULE DROITE — DOS -->
+            <div
+                class="body-zone back-zone zone-epaule-dos-droite"
+                onclick="showExercises('Épaules')">
+            </div>
+
+            <!-- =========================
+                TRICEPS — DOS
+            ========================= -->
+
+            <div
+                class="body-zone back-zone zone-triceps-gauche"
+                onclick="showExercises('Triceps')">
+            </div>
+
+            <div
+                class="body-zone back-zone zone-triceps-droite"
+                onclick="showExercises('Triceps')">
+            </div>
+
+            <!-- =========================
+                EXTENSEURS AVANT-BRAS — DOS
+            ========================= -->
+
+            <div
+                class="body-zone back-zone zone-extenseur-gauche"
+                onclick="showExercises('Extenseurs des avant-bras')">
+            </div>
+
+            <div
+                class="body-zone back-zone zone-extenseur-droite"
+                onclick="showExercises('Extenseurs des avant-bras')">
+            </div>
+            <!-- =========================
+                FESSIERS — DOS
+            ========================= -->
+
+            <div
+                class="body-zone back-zone zone-fessiers"
+                onclick="showExercises('Fessiers')">
+            </div>
+
+            <!-- =========================
+                ISCHIO-JAMBIERS — DOS
+            ========================= -->
+
+            <div
+                class="body-zone back-zone zone-ischio-gauche"
+                onclick="showExercises('Ischio-jambiers')">
+            </div>
+
+            <div
+                class="body-zone back-zone zone-ischio-droite"
+                 onclick="showExercises('Ischio-jambiers')">
+            </div>
+            <!-- =========================
+                MOLLETS — DOS
+            ========================= -->
+
+            <div
+                class="body-zone back-zone zone-mollet-gauche"
+                onclick="showExercises('Mollets')">
+                </div>
+
+            <div
+                class="body-zone back-zone zone-mollet-droite"
+                onclick="showExercises('Mollets')">
+            </div>
+            <!-- =========================
+                TRAPÈZES + RHOMBOÏDES — DOS
+            ========================= -->
+
+            <div
+                class="body-zone back-zone zone-trapezes-rhomboides"
+                onclick="showExercises('Trapèzes et rhomboïdes')">
+            </div>
+
+            <!-- =========================
+                DORSAUX — DOS
+            ========================= -->
+
+            <div
+                class="body-zone back-zone zone-dorsal-gauche"
+                onclick="showExercises('Dorsaux')">
+            </div>
+
+            <div
+                class="body-zone back-zone zone-dorsal-droite"
+                onclick="showExercises('Dorsaux')">
+            </div>
+
+            <!-- =========================
+                LOMBAIRES — DOS
+            ========================= -->
+
+            <div
+                class="body-zone back-zone zone-lombaires"
+                onclick="showExercises('Lombaires')">
+            </div>
+
+        </div>
+
+    </div>
+
+           <!-- =========================
+            PANNEAU EXERCICES
+            ========================== -->
+
+        <div class="exercise-panel-container">
+
+        <button
+            class="reset-button"
+            onclick="resetSelection()">
+            ↺ Réinitialiser
+        </button>
+
+        <div
+            class="exercises"
+            id="exercisePanel">
+
+        <h2>
+            Choisissez une zone
+        </h2>
+
+        <p>
+            Cliquez sur une partie du corps pour afficher
+            les exercices disponibles.
+        </p>
+
+    </div>
+
+</div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,1068 @@
+/* =========================
+   GÉNÉRAL
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 30px;
+    text-align: center;
+    background: #f5f7fa;
+    color: #222;
+}
+
+h1 {
+    margin-bottom: 8px;
+}
+
+.intro {
+    margin-bottom: 18px;
+}
+
+/* =========================
+   EN-TÊTE
+========================= */
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.site-header h1 {
+    margin: 0;
+}
+
+.profile-photo {
+    position: absolute;
+    right: 600px;
+
+    width: 65px;
+    height: 65px;
+
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* =========================
+   CATÉGORIES
+========================= */
+
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0 12px;
+    flex-wrap: wrap;
+}
+
+.category-button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 10px;
+    background: #e1e5ea;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.category-button:hover {
+    transform: translateY(-2px);
+}
+
+.category-button.active {
+    background: #333;
+    color: white;
+}
+
+
+/* =========================
+   POSITIONS
+========================= */
+
+.position-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    flex-wrap: wrap;
+}
+
+.position-button {
+    padding: 9px 18px;
+    border: 2px solid #d5d9de;
+    border-radius: 9px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.position-button:hover {
+    transform: translateY(-2px);
+}
+
+.position-button.active {
+    background: #555;
+    color: white;
+    border-color: #555;
+}
+
+
+/* =========================
+   FACE / DOS
+========================= */
+
+.view-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.view-button {
+    padding: 9px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #ddd;
+    font-size: 15px;
+}
+
+.view-button.active {
+    background: #555;
+    color: white;
+}
+
+
+/* =========================
+   CONTENU
+========================= */
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 70px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================
+   PERSONNAGE ANATOME
+========================= */
+
+.body-container {
+    width: 420px;
+    height: 650px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.anatomy-body {
+    width: 420px;
+    height: 650px;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+/* =========================
+   FACE / DOS
+========================= */
+
+.back-body {
+    display: none;
+}
+
+
+/* =========================
+   PANNEAU EXERCICES
+========================= */
+
+.exercises {
+    width: 390px;
+    min-height: 320px;
+
+    padding: 25px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 6px 25px rgba(0, 0, 0, 0.08);
+
+    text-align: left;
+}
+
+.exercises h2 {
+    margin-top: 0;
+}
+
+.exercises h3 {
+    color: #555;
+}
+
+
+/* =========================
+   CARTES EXERCICES
+========================= */
+
+.exercise-card {
+    background: #f1f3f5;
+
+    padding: 15px;
+
+    margin-top: 15px;
+
+    border-radius: 10px;
+
+    border-left: 4px solid #3286c5;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .content {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .body-container {
+        width: 300px;
+        height: 550px;
+    }
+
+    .anatomy-body {
+        width: 300px;
+        height: 550px;
+    }
+
+    .exercises {
+        width: 100%;
+        max-width: 390px;
+    }
+}
+.body-container {
+    position: relative;
+}
+/* =========================
+   POSITIONS de clique pour cou
+========================= */
+
+.zone-cou {
+    width: 60px;
+    height: 25px;
+
+    top: 140px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    background: rgba(0, 200, 200, 0.5);
+    border: 2px solid #00c8c8;
+
+    clip-path: polygon(
+        30% 0%,
+        70% 0%,
+        100% 100%,
+        0% 100%
+    );
+}
+/* =========================
+   POSITIONS de clique pour épaules
+========================= */
+
+/* Épaule gauche */
+.zone-epaule-gauche {
+    width: 35px;
+    height: 40px;
+
+    top: 154px;
+    left: 33%;
+
+    transform: translateX(-50%);
+
+    transform: rotate(35deg);
+
+    border-radius: 60px 0 0 60px;
+
+    background: rgba(139, 69, 19, 0.3);
+    border: 2px solid #8b4513;
+}
+
+/* Épaule droite */
+.zone-epaule-droite {
+    width: 35px;
+    height: 40px;
+
+    top: 157px;
+    left: 59%;
+
+    transform: translateX(-50%);
+
+    transform: rotate(342deg);
+
+    border-radius: 0 70px 70px 0;
+
+    background: rgba(139, 69, 19, 0.3);
+    border: 2px solid #8b4513;
+}
+/* =========================
+   POSITIONS de clique pour pec
+========================= */
+.body-zone {
+    position: absolute;
+    cursor: pointer;
+
+    background: rgba(255, 0, 0, 0.3);
+    border: 2px solid red;
+}
+
+.zone-pectoraux {
+    width: 85px;
+    height: 48px;
+
+    top: 166px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+}
+
+/* =========================
+   POSITIONS de clique pour abdo
+========================= */
+.zone-abdos {
+    width: 50px;
+    height: 107px;
+    top: 215px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+
+    background: rgba(255, 200, 0, 0.3);
+    border: 2px solid #ffc400;
+}
+
+/* =========================
+   POSITIONS de clique pour obliques
+========================= */
+
+/* Oblique gauche */
+.zone-oblique-gauche {
+    width: 15px;
+    height: 88px;
+
+    top: 210px;
+    left: 42%;
+
+    transform: translateX(-50%) rotate(0deg);
+
+    background: rgba(80, 80, 80, 0.5);
+    border: 2px solid #505050;
+}
+
+/* Oblique droit */
+.zone-oblique-droite {
+    width: 15px;
+    height: 88px;
+
+    top: 210px;
+    left: 58%;
+
+    transform: translateX(-50%) rotate(0deg);
+
+    background: rgba(80, 80, 80, 0.5);
+    border: 2px solid #505050;
+}
+
+/* =========================
+   POSITIONS de clique pour cuisses
+========================= */
+/* Cuisse gauche */
+.zone-cuisse-gauche {
+    width: 40px;
+    height: 110px;
+
+    top: 300px;
+    left: 43.5%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(0, 180, 80, 0.3);
+    border: 2px solid #00b450;
+}
+
+/* Cuisse droite */
+.zone-cuisse-droite {
+    width: 40px;
+    height: 110px;
+
+    top: 300px;
+    left: 57%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(0, 180, 80, 0.3);
+    border: 2px solid #00b450;
+}
+/* =========================
+   POSITIONS de clique pour Tibias
+========================= */
+
+/* Tibia gauche */
+.zone-tibia-gauche {
+    width: 27px;
+    height: 85px;
+
+    top: 434px;
+    left: 43%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(0, 120, 255, 0.3);
+    border: 2px solid #0078ff;
+}
+
+/* Tibia droit */
+.zone-tibia-droite {
+    width: 27px;
+    height: 85px;
+
+    top: 434px;
+    left: 57%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(0, 120, 255, 0.3);
+    border: 2px solid #0078ff;
+}
+/* =========================
+   TIBIAS — SURVOL FACE
+========================= */
+
+.zone-tibia-gauche:hover,
+.zone-tibia-droite:hover {
+    opacity: 1 !important;
+    background: rgba(0, 120, 255, 0.3) !important;
+    border: 2px solid #0078ff !important;
+}
+
+/* =========================
+   POSITIONS de clique pour Biceps 
+========================= */
+
+/* Biceps gauche */
+.zone-biceps-gauche {
+    width: 40px;
+    height: 40px;
+
+    top: 200px;
+    left: 35%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(150, 0, 255, 0.3);
+    border: 2px solid #9600ff;
+}
+
+.zone-biceps-droite {
+    width: 40px;
+    height: 40px;
+
+    top: 200px;
+    left: 65%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(150, 0, 255, 0.3);
+    border: 2px solid #9600ff;
+}
+
+/* =========================
+   POSITIONS de clique pour Avant-Bras 
+========================= */
+
+/* Avant-bras gauche */
+.zone-avant-bras-gauche {
+    width: 36px;
+    height: 70px;
+
+    top: 240px;
+    left: 32%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(255, 80, 150, 0.3);
+    border: 2px solid #ff5096;
+}
+
+/* Avant-bras droit */
+.zone-avant-bras-droite {
+    width: 36px;
+    height: 70px;
+
+    top: 240px;
+    left: 68%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(255, 80, 150, 0.3);
+    border: 2px solid #ff5096;
+}
+
+/* =========================
+   CONTENEUR DU DOS
+========================= */
+
+.back-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 420px;
+    height: 650px;
+}
+
+.back-container .anatomy-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.back-container .back-zone {
+    position: absolute;
+}
+
+
+/* =========================
+   ZONES POUR CLIQUER DANS LE DOS
+========================= */
+
+/* =========================
+   COU / TRAPÈZES — DOS
+========================= */
+
+
+.zone-cou-dos {
+    width: 60px;
+    height: 35px;
+
+    top: 125px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-radius: 40%;
+
+    background: rgba(255, 120, 0, 0.3);
+    border: 2px solid #ff7800;
+}
+/* =========================
+   ÉPAULES — DOS
+========================= */
+
+.zone-epaule-dos-gauche {
+    width: 35px;
+    height: 40px;
+
+    top: 154px;
+    left: 30%;
+
+    transform: rotate(35deg);
+
+    border-radius: 60px 0 0 60px;
+
+    background: rgba(139, 69, 19, 0.3);
+    border: 2px solid #8b4513;
+}
+
+.zone-epaule-dos-droite {
+    width: 35px;
+    height: 40px;
+
+    top: 154px;
+    left: 60%;
+
+    transform: rotate(-30deg);
+
+    border-radius: 0 70px 70px 0;
+
+    background: rgba(139, 69, 19, 0.3);
+    border: 2px solid #8b4513;
+}
+/* =========================
+   TRICEPS — DOS
+========================= */
+
+.zone-triceps-gauche {
+    width: 40px;
+    height: 45px;
+
+    top: 198px;
+    left: 35%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(150, 0, 255, 0.3);
+    border: 2px solid #9600ff;
+}
+
+.zone-triceps-droite {
+    width: 40px;
+    height: 45px;
+
+    top: 198px;
+    left: 65%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(150, 0, 255, 0.3);
+    border: 2px solid #9600ff;
+}
+/* =========================
+   EXTENSEURS AVANT-BRAS — DOS
+========================= */
+
+.zone-extenseur-gauche {
+    width: 36px;
+    height: 70px;
+
+    top: 240px;
+    left: 32%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(255, 80, 150, 0.3);
+    border: 2px solid #ff5096;
+}
+
+.zone-extenseur-droite {
+    width: 36px;
+    height: 70px;
+
+    top: 240px;
+    left: 68%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(255, 80, 150, 0.3);
+    border: 2px solid #ff5096;
+}
+
+/* =========================
+   TRAPÈZES + RHOMBOÏDES — DOS
+========================= */
+
+.zone-trapezes-rhomboides {
+    width: 105px;
+    height: 85px;
+
+    top: 160px;
+    left: 49.6%;
+
+    transform: translateX(-50%);
+
+    background: rgba(255, 120, 0, 0.3);
+    border: 2px solid #ff7800;
+
+    clip-path: polygon(
+        20% 0%,
+        80% 0%,
+        100% 45%,
+        82% 45%,
+        65% 55%,
+        50% 80%,
+        35% 55%,
+        18% 45%,
+        0% 45%
+    );
+}
+
+/* =========================
+   DORSAUX — DOS
+========================= */
+
+.zone-dorsal-gauche {
+    width: 35px;
+    height: 90px;
+
+    top: 190px;
+    left: 39.5%;
+
+    background: rgba(0, 150, 200, 0.3);
+    border: 2px solid #0096c8;
+
+    clip-path: polygon(
+        0% 15%,
+        75% 20%,
+        100% 40%,
+        35% 100%
+    );
+}
+
+.zone-dorsal-droite {
+    width: 35px;
+    height: 90px;
+
+    top: 190px;
+    left: 52%;
+
+    background: rgba(0, 150, 200, 0.3);
+    border: 2px solid #0096c8;
+
+    clip-path: polygon(
+        25% 20%,
+        100% 15%,
+        65% 100%,
+        0% 40%
+    );
+}
+
+/* =========================
+   LOMBAIRES — DOS
+========================= */
+
+.zone-lombaires {
+    width: 75px;
+    height: 60px;
+
+    top: 230px;
+    left: 49.7%;
+
+    transform: translateX(-50%);
+
+    background: rgba(255, 170, 0, 0.3);
+    border: 2px solid #ffaa00;
+
+    clip-path: polygon(
+        50% 0%,
+        100% 100%,
+        0% 100%
+    );
+}
+
+/* =========================
+   FESSIERS — DOS
+========================= */
+
+.zone-fessiers {
+    width: 100px;
+    height: 60px;
+
+    top: 290px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(255, 80, 80, 0.3);
+    border: 2px solid #ff5050;
+}
+/* =========================
+   ISCHIO-JAMBIERS — DOS
+========================= */
+
+.zone-ischio-gauche {
+    width: 55px;
+    height: 75px;
+
+    top: 342px;
+    left: 42%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(0, 180, 80, 0.3);
+    border: 2px solid #00b450;
+}
+
+.zone-ischio-droite {
+    width: 55px;
+    height: 75px;
+
+    top: 343px;
+    left: 58%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(0, 180, 80, 0.3);
+    border: 2px solid #00b450;
+}
+/* =========================
+   MOLLETS — DOS
+========================= */
+
+.zone-mollet-gauche {
+    width: 32px;
+    height: 120px;
+
+    top: 425px;
+    left: 43%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(0, 120, 255, 0.3);
+    border: 2px solid #0078ff;
+}
+
+.zone-mollet-droite {
+    width: 32px;
+    height: 120px;
+
+    top: 425px;
+    left: 57%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: rgba(0, 120, 255, 0.3);
+    border: 2px solid #0078ff;
+}
+
+/* =========================
+VISIBILITÉ / SÉLECTION DES ZONES
+========================= */
+
+.body-zone {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+
+/* Zone au survol */
+.body-zone:hover {
+    opacity: 1;
+}
+
+
+/* Groupe au survol */
+.body-zone.hover-group {
+    opacity: 1;
+}
+
+
+/* Zone sélectionnée par un clic */
+.body-zone.selected {
+    opacity: 1;
+}
+
+
+/* Le conteneur du dos ne bloque pas les zones de la face */
+.back-container {
+    pointer-events: none;
+}
+
+
+/* Les zones du dos restent cliquables quand la vue dos est active */
+.back-container .back-zone {
+    pointer-events: auto;
+}
+
+/* =========================
+   VIDÉOS EXERCICES
+========================= */
+
+.exercise-card h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.exercise-card iframe {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+}
+
+/* =========================
+   Liens PDF sous videos exercices
+========================= */
+
+.pdf-link {
+    display: block;
+    margin-top: 12px;
+    padding: 10px;
+    text-align: center;
+    background: #f1f3f5;
+    border-radius: 8px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.pdf-link:hover {
+    background: #e1e5ea;
+}
+
+/* =========================
+   ACCORDÉON EXERCICES
+========================= */
+
+.accordion-item {
+    margin-top: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f1f3f5;
+}
+
+
+/* Titre de l'exercice */
+
+.accordion-title {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    background: #f1f3f5;
+    cursor: pointer;
+
+    text-align: left;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    color: #333;
+}
+
+
+/* Petite flèche */
+
+.accordion-title span {
+    display: inline-block;
+    width: 22px;
+}
+
+
+/* Zone contenant vidéo + PDF */
+
+.accordion-content {
+    display: none;
+    padding: 0 12px 12px 12px;
+}
+
+
+/* Vidéo */
+
+.accordion-content iframe {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+}
+
+
+/* PDF */
+
+.pdf-link {
+    display: block;
+    margin-top: 12px;
+    padding: 10px;
+
+    text-align: center;
+
+    background: white;
+    border-radius: 8px;
+
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.pdf-link:hover {
+    background: #e1e5ea;
+}
+
+/* =========================
+   BOUTON RÉINITIALISER
+========================= */
+
+.exercise-panel-container {
+    position: relative;
+}
+
+.reset-button {
+    position: absolute;
+    top: -45px;
+    right: 15px;
+
+    padding: 8px 14px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #e9ecef;
+    color: #333;
+
+    font-size: 14px;
+    cursor: pointer;
+
+    z-index: 100;
+}
+
+.reset-button:hover {
+    background: #d6d9dc;
+}
+/* =========================
+   Ecriture 0/3 1/3 2/3 3/3
+========================= */
+
+#progressIndicator {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+       
