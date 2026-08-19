@@ -1106,7 +1106,7 @@ VISIBILITÉ / SÉLECTION DES ZONES
         width: 420px;
         height: 650px;
 
-        transform: scale(0.72);
+        transform: translate(-25px, -25px) scale(0.72);
         transform-origin: top center;
 
         margin-bottom: -180px;
