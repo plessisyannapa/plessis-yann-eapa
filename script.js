@@ -28,49 +28,49 @@ function changeCategory(category, button) {
 
 
     /* =========================
-       MOBILITÉ — À VENIR
-    ========================= */
+   MOBILITÉ — À VENIR
+========================= */
 
-    if (category === "mobilite") {
+if (category === "mobilite") {
 
-        const panel =
-            document.getElementById("exercisePanel");
+    const panel =
+        document.getElementById("exercisePanel");
 
-        panel.innerHTML = `
-            <h2>Mobilité</h2>
+    panel.innerHTML = `
+        <h2>Mobilité</h2>
 
-            <p style="
-                font-size: 20px;
-                font-weight: bold;
-                margin-top: 30px;
-            ">
-                🚧 À venir
-            </p>
+        <p style="
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 30px;
+        ">
+            🚧 À venir
+        </p>
 
-            <p>
-                Cette rubrique est actuellement en préparation.
-            </p>
+        <p>
+            Cette rubrique est actuellement en préparation.
+        </p>
 
-            <p>
-                Les exercices de mobilité seront bientôt disponibles.
-            </p>
-        `;
+        <p>
+            Les exercices de mobilité seront bientôt disponibles.
+        </p>
+    `;
 
-        return;
+    return;
     }
 
 
-    /* =========================
-       RENFORCEMENT / ÉTIREMENTS
-    ========================= */
+        /* =========================
+        RENFORCEMENT / ÉTIREMENTS
+        ========================= */
 
-    if (selectedZone !== null) {
+if (selectedZone !== null) {
 
-        showExercises(selectedZone);
+    showExercises(selectedZone);
 
     } else {
 
-        updatePanel();
+    updatePanel();
 
     }
 }
@@ -218,9 +218,38 @@ function changeView(view, button) {
     }
 
 
-    /* Remettre le panneau à zéro */
+    /* Mettre à jour le panneau */
+
+if (currentCategory === "mobilite") {
+
+    const panel =
+        document.getElementById("exercisePanel");
+
+    panel.innerHTML = `
+        <h2>Mobilité</h2>
+
+        <p style="
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 30px;
+        ">
+            🚧 À venir
+        </p>
+
+        <p>
+            Cette rubrique est actuellement en préparation.
+        </p>
+
+        <p>
+            Les exercices de mobilité seront bientôt disponibles.
+        </p>
+    `;
+
+    } else {
 
     updatePanel();
+
+    }
 }
 
 
@@ -1906,11 +1935,16 @@ const exercises = {
 
 function showExercises(zone) {
 
+    /* Mobilité : ne pas modifier le message */
+    if (currentCategory === "mobilite") {
+        return;
+    }
+
     const panel = document.getElementById("exercisePanel");
 
     const categoryExercises =
         (exercises[zone]?.[currentCategory] || [])
-        .filter(exercise  => exercise.position === currentPosition);
+        .filter(exercise => exercise.position === currentPosition);
 
     let html = `
         <h2>${zone}</h2>
