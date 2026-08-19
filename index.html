@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-    
 <head>
 
     <meta charset="UTF-8">
@@ -18,13 +17,16 @@
 
     <div class="site-header">
 
-        <h1>Plessis Yann - Enseignant APA</h1>
-
         <img
             src="images/yann.jpg"
             alt="Plessis Yann - Enseignant APA"
             class="profile-photo"
         >
+
+        <h1>
+            <span class="title-main">Plessis Yann</span>
+            <span class="title-sub">Enseignant APA</span>
+        </h1>
 
     </div>
 
@@ -34,31 +36,33 @@
 
 
     <!-- =========================
-         CATÉGORIES
+     CATÉGORIES
     ========================== -->
 
     <div class="category-buttons">
 
-       
-        <button
-            class="category-button"
-            onclick="changeCategory('renforcement', this)">
-            💪 Renforcement
-        </button>
+    <button
+        class="category-button"
+        onclick="changeCategory('renforcement', this)">
+        <span class="category-icon">💪</span>
+        <span class="category-text">Renforcement</span>
+    </button>
 
-        <button
-            class="category-button"
-            onclick="changeCategory('etirements', this)">
-            🧘 Étirements
-        </button>
+    <button
+        class="category-button"
+        onclick="changeCategory('etirements', this)">
+        <span class="category-icon">🧘</span>
+        <span class="category-text">Étirements</span>
+    </button>
 
-         <button
-            class="category-button active"
-            onclick="changeCategory('mobilite', this)">
-            🏃 Mobilité
-        </button>
+    <button
+        class="category-button active"
+        onclick="changeCategory('mobilite', this)">
+        <span class="category-icon">🏃</span>
+        <span class="category-text">Mobilité</span>
+    </button>
 
-    </div>
+</div>
 
 
     <!-- =========================
