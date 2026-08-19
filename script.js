@@ -2382,11 +2382,6 @@ function updatePanel() {
         <h2>Choisissez trois options</h2>
 
         <p>
-            Puis cliquez sur une partie du corps pour afficher
-            les exercices disponibles.
-        </p>
-
-        <p>
             <strong>Programme sélectionné :</strong>
             ${
                 currentCategory
@@ -2415,6 +2410,11 @@ function updatePanel() {
                         ? "Dos"
                         : "Aucune"
             }
+        </p>
+
+        <p>
+            Puis cliquez sur une partie du corps pour afficher
+            les exercices disponibles.
         </p>
     `;
 }
