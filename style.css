@@ -420,7 +420,7 @@ h1 {
     border: 2px solid #00b450;
 }
 /* =========================
-   POSITIONS de clique pour Tibias
+   POSITIONS DE CLIQUE POUR TIBIAS
 ========================= */
 
 /* Tibia gauche */
@@ -439,6 +439,7 @@ h1 {
     border: 2px solid #0078ff;
 }
 
+
 /* Tibia droit */
 .zone-tibia-droite {
     width: 27px;
@@ -454,15 +455,40 @@ h1 {
     background: rgba(0, 120, 255, 0.3);
     border: 2px solid #0078ff;
 }
+
+
 /* =========================
-   TIBIAS — SURVOL FACE
+   TIBIAS — SURVOL PC UNIQUEMENT
 ========================= */
 
-.zone-tibia-gauche:hover,
-.zone-tibia-droite:hover {
-    opacity: 1 !important;
-    background: rgba(0, 120, 255, 0.3) !important;
-    border: 2px solid #0078ff !important;
+@media (hover: hover) and (pointer: fine) {
+
+    .zone-tibia-gauche:hover,
+    .zone-tibia-droite:hover {
+        opacity: 1;
+        background: rgba(0, 120, 255, 0.3);
+        border: 2px solid #0078ff;
+    }
+
+}
+
+
+/* =========================
+   TIBIAS — PORTABLE
+========================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+    .zone-tibia-gauche:hover,
+    .zone-tibia-droite:hover {
+        opacity: 0;
+    }
+
+    .zone-tibia-gauche.selected,
+    .zone-tibia-droite.selected {
+        opacity: 1;
+    }
+
 }
 
 /* =========================
@@ -861,42 +887,85 @@ h1 {
 }
 
 /* =========================
-VISIBILITÉ / SÉLECTION DES ZONES
+   VISIBILITÉ / SÉLECTION DES ZONES
 ========================= */
 
 .body-zone {
+
     opacity: 0;
+
     transition: opacity 0.2s ease;
+
 }
 
 
-/* Zone au survol */
-.body-zone:hover {
-    opacity: 1;
+/* =========================
+   COMPORTEMENT SUR PC
+========================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+    /* Zone au survol */
+    .body-zone:hover {
+        opacity: 1;
+    }
+
+    /* Groupe au survol */
+    .body-zone.hover-group {
+        opacity: 1;
+    }
+
+    /* Zone sélectionnée */
+    .body-zone.selected {
+        opacity: 1;
+    }
+
 }
 
 
-/* Groupe au survol */
-.body-zone.hover-group {
-    opacity: 1;
+/* =========================
+   COMPORTEMENT SUR PORTABLE
+========================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+    /* Aucun effet hover sur tactile */
+    .body-zone:hover {
+        opacity: 0;
+    }
+
+    /* Aucun effet hover-group sur tactile */
+    .body-zone.hover-group {
+        opacity: 0;
+    }
+
+    /* Seule une zone verrouillée reste visible */
+    .body-zone.selected {
+        opacity: 1;
+    }
+
 }
 
 
-/* Zone sélectionnée par un clic */
-.body-zone.selected {
-    opacity: 1;
-}
+/* =========================
+   CONTENEUR DU DOS
+========================= */
 
-
-/* Le conteneur du dos ne bloque pas les zones de la face */
 .back-container {
+
     pointer-events: none;
+
 }
 
 
-/* Les zones du dos restent cliquables quand la vue dos est active */
+/* =========================
+   ZONES DU DOS CLIQUABLES
+========================= */
+
 .back-container .back-zone {
+
     pointer-events: auto;
+
 }
 
 /* =========================
