@@ -40,7 +40,7 @@ h1 {
 }
 
 .profile-photo {
-    position: absolute;
+    position: fixed;
     right: 600px;
 
     width: 65px;
