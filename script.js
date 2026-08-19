@@ -2,9 +2,9 @@
    VARIABLES
 ========================= */
 
-let currentCategory = "renforcement";
-let currentPosition = "debout";
-let currentView = "front";
+let currentCategory = null;
+let currentPosition = null;
+let currentView = null;
 
 let selectedGroup = null;
 let selectedZone = null;
@@ -24,54 +24,23 @@ function changeCategory(category, button) {
         .querySelectorAll(".category-button")
         .forEach(btn => btn.classList.remove("active"));
 
-    button.classList.add("active");
-
-
-    /* =========================
-   MOBILITÉ — À VENIR
-========================= */
-
-if (category === "mobilite") {
-
-    const panel =
-        document.getElementById("exercisePanel");
-
-    panel.innerHTML = `
-        <h2>Mobilité</h2>
-
-        <p style="
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 30px;
-        ">
-            🚧 À venir
-        </p>
-
-        <p>
-            Cette rubrique est actuellement en préparation.
-        </p>
-
-        <p>
-            Les exercices de mobilité seront bientôt disponibles.
-        </p>
-    `;
-
-    return;
+    if (button) {
+        button.classList.add("active");
     }
 
+    if (category === "mobilite") {
 
-        /* =========================
-        RENFORCEMENT / ÉTIREMENTS
-        ========================= */
+        showMobilityMessage();
+        return;
+    }
 
-if (selectedZone !== null) {
+    if (selectedZone !== null) {
 
-    showExercises(selectedZone);
+        showExercises(selectedZone);
 
     } else {
 
-    updatePanel();
-
+        updatePanel();
     }
 }
 
@@ -90,45 +59,15 @@ function changePosition(position, button) {
         .querySelectorAll(".position-button")
         .forEach(btn => btn.classList.remove("active"));
 
-    button.classList.add("active");
-
-
-    /* =========================
-       MOBILITÉ — À VENIR
-    ========================= */
+    if (button) {
+        button.classList.add("active");
+    }
 
     if (currentCategory === "mobilite") {
 
-        const panel =
-            document.getElementById("exercisePanel");
-
-        panel.innerHTML = `
-            <h2>Mobilité</h2>
-
-            <p style="
-                font-size: 20px;
-                font-weight: bold;
-                margin-top: 30px;
-            ">
-                🚧 À venir
-            </p>
-
-            <p>
-                Cette rubrique est actuellement en préparation.
-            </p>
-
-            <p>
-                Les exercices de mobilité seront bientôt disponibles.
-            </p>
-        `;
-
+        showMobilityMessage();
         return;
     }
-
-
-    /* =========================
-       FONCTIONNEMENT NORMAL
-    ========================= */
 
     if (selectedZone !== null) {
 
@@ -137,9 +76,7 @@ function changePosition(position, button) {
     } else {
 
         updatePanel();
-
     }
-
 }
 
 
@@ -154,8 +91,7 @@ function changeView(view, button) {
     updateProgress();
 
     /* =========================
-       CHANGER DE VUE
-       → DÉVERROUILLER
+       DÉVERROUILLER LA ZONE
     ========================= */
 
     document
@@ -170,29 +106,49 @@ function changeView(view, button) {
             zone.classList.remove("hover-group");
         });
 
-
     selectedGroup = null;
     selectedZone = null;
 
+
+    /* =========================
+       BOUTONS FACE / DOS
+    ========================= */
 
     document
         .querySelectorAll(".view-button")
         .forEach(btn => btn.classList.remove("active"));
 
-    button.classList.add("active");
+    if (button) {
+        button.classList.add("active");
+    }
 
 
-    const frontBody = document.getElementById("frontBody");
-    const backBody = document.getElementById("backBody");
+    /* =========================
+       SILHOUETTES
+    ========================= */
 
-    const frontZones = document.querySelectorAll(".front-zone");
-    const backZones = document.querySelectorAll(".back-zone");
+    const frontBody =
+        document.getElementById("frontBody");
+
+    const backBody =
+        document.getElementById("backBody");
+
+    const frontZones =
+        document.querySelectorAll(".front-zone");
+
+    const backZones =
+        document.querySelectorAll(".back-zone");
 
 
     if (view === "front") {
 
-        frontBody.style.display = "block";
-        backBody.style.display = "none";
+        if (frontBody) {
+            frontBody.style.display = "block";
+        }
+
+        if (backBody) {
+            backBody.style.display = "none";
+        }
 
         frontZones.forEach(zone => {
             zone.style.display = "block";
@@ -204,8 +160,13 @@ function changeView(view, button) {
 
     } else {
 
-        frontBody.style.display = "none";
-        backBody.style.display = "block";
+        if (frontBody) {
+            frontBody.style.display = "none";
+        }
+
+        if (backBody) {
+            backBody.style.display = "block";
+        }
 
         frontZones.forEach(zone => {
             zone.style.display = "none";
@@ -214,16 +175,36 @@ function changeView(view, button) {
         backZones.forEach(zone => {
             zone.style.display = "block";
         });
-
     }
 
 
-    /* Mettre à jour le panneau */
+    /* =========================
+       PANNEAU
+    ========================= */
 
-if (currentCategory === "mobilite") {
+    if (currentCategory === "mobilite") {
+
+        showMobilityMessage();
+
+    } else {
+
+        updatePanel();
+    }
+}
+
+
+    /* =========================
+        MESSAGE MOBILITÉ
+    ========================= */
+
+function showMobilityMessage() {
 
     const panel =
         document.getElementById("exercisePanel");
+
+    if (!panel) {
+        return;
+    }
 
     panel.innerHTML = `
         <h2>Mobilité</h2>
@@ -245,11 +226,477 @@ if (currentCategory === "mobilite") {
         </p>
     `;
 
-    } else {
 
-    updatePanel();
+    /* =========================
+       SCROLL AUTOMATIQUE
+       SEULEMENT SI LES 3 CHOIX
+       + UNE ZONE SONT VALIDÉS
+    ========================= */
+
+    if (
+        currentCategory !== null &&
+        currentPosition !== null &&
+        currentView !== null &&
+        selectedZone !== null
+    ) {
+
+        scrollToExercisesMobile();
 
     }
+}
+
+
+/* =========================
+   GROUPES DE ZONES
+========================= */
+
+const zoneGroups = {
+
+    "Biceps": [
+        ".zone-biceps-gauche",
+        ".zone-biceps-droite"
+    ],
+
+    "Triceps": [
+        ".zone-triceps-gauche",
+        ".zone-triceps-droite"
+    ],
+
+    "Dorsaux": [
+        ".zone-dorsal-gauche",
+        ".zone-dorsal-droite"
+    ],
+
+    "Trapèzes et rhomboïdes": [
+        ".zone-trapezes-rhomboides"
+    ],
+
+    "Épaules": [
+        ".zone-epaule-gauche",
+        ".zone-epaule-droite",
+        ".zone-epaule-dos-gauche",
+        ".zone-epaule-dos-droite"
+    ],
+
+    "Avant-bras": [
+        ".zone-avant-bras-gauche",
+        ".zone-avant-bras-droite"
+    ],
+
+    "Extenseurs des avant-bras": [
+        ".zone-extenseur-gauche",
+        ".zone-extenseur-droite"
+    ],
+
+    "Cuisses": [
+        ".zone-cuisse-gauche",
+        ".zone-cuisse-droite"
+    ],
+
+    "Tibias": [
+        ".zone-tibia-gauche",
+        ".zone-tibia-droite"
+    ],
+
+    "Obliques": [
+        ".zone-oblique-gauche",
+        ".zone-oblique-droite"
+    ],
+
+    "Ischio-jambiers": [
+        ".zone-ischio-gauche",
+        ".zone-ischio-droite"
+    ],
+
+    "Mollets": [
+        ".zone-mollet-gauche",
+        ".zone-mollet-droite"
+    ],
+
+    "Lombaires": [
+        ".zone-lombaires"
+    ],
+
+    "Fessiers": [
+        ".zone-fessiers"
+    ]
+};
+
+
+/* =========================
+   RÉCUPÉRER LES ZONES
+   D'UN GROUPE
+========================= */
+
+function getGroupZones(groupName) {
+
+    const selectors =
+        zoneGroups[groupName] || [];
+
+    return selectors.flatMap(selector =>
+        Array.from(
+            document.querySelectorAll(selector)
+        )
+    );
+}
+
+
+/* =========================
+   TROUVER LE GROUPE
+========================= */
+
+function getZoneGroup(zone) {
+
+    for (const groupName in zoneGroups) {
+
+        const zones =
+            getGroupZones(groupName);
+
+        if (zones.includes(zone)) {
+            return groupName;
+        }
+    }
+
+    return null;
+}
+
+
+/* =========================
+   NOM D'UNE ZONE
+========================= */
+
+function getZoneName(zone) {
+
+    const onclickValue =
+        zone.getAttribute("onclick");
+
+    if (!onclickValue) {
+        return null;
+    }
+
+    const match =
+        onclickValue.match(
+            /showExercises\('([^']+)'\)/
+        );
+
+    if (match) {
+        return match[1];
+    }
+
+    return null;
+}
+
+
+/* =========================
+   INITIALISATION DES ZONES
+========================= */
+
+function initializeZones() {
+
+    document
+        .querySelectorAll(".body-zone")
+        .forEach(zone => {
+
+            /* =========================
+               SURVOL
+            ========================= */
+
+            zone.addEventListener("mouseenter", function () {
+
+                if (selectedZone !== null) {
+                    return;
+                }
+
+                const groupName =
+                    getZoneGroup(this);
+
+                if (groupName) {
+
+                    getGroupZones(groupName)
+                        .forEach(groupZone => {
+
+                            groupZone.classList.add(
+                                "hover-group"
+                            );
+
+                        });
+
+                    showExercises(groupName);
+
+                } else {
+
+                    const zoneName =
+                        getZoneName(this);
+
+                    if (zoneName) {
+                        showExercises(zoneName);
+                    }
+                }
+            });
+
+
+            /* =========================
+               SORTIE
+            ========================= */
+
+            zone.addEventListener("mouseleave", function () {
+
+                if (selectedZone !== null) {
+                    return;
+                }
+
+                const groupName =
+                    getZoneGroup(this);
+
+                if (!groupName) {
+                    return;
+                }
+
+                setTimeout(() => {
+
+                    const stillHovered =
+                        getGroupZones(groupName)
+                            .some(groupZone =>
+                                groupZone.matches(":hover")
+                            );
+
+                    if (
+                        !stillHovered &&
+                        selectedZone === null
+                    ) {
+
+                        getGroupZones(groupName)
+                            .forEach(groupZone => {
+
+                                groupZone.classList.remove(
+                                    "hover-group"
+                                );
+
+                            });
+                    }
+
+                }, 20);
+            });
+
+
+            /* =========================
+               CLIC
+            ========================= */
+
+            zone.addEventListener("click", function () {
+
+                const clickedGroup =
+                    getZoneGroup(this);
+
+                const clickedZone =
+                    getZoneName(this);
+
+
+                /* =========================
+                   SI LA ZONE EST DÉJÀ
+                   VERROUILLÉE
+                ========================= */
+
+                if (selectedZone !== null) {
+
+                    let sameSelection = false;
+
+
+                    /* Zone individuelle */
+
+                    if (
+                        selectedGroup &&
+                        selectedGroup instanceof Element &&
+                        !clickedGroup &&
+                        selectedZone === clickedZone
+                    ) {
+
+                        sameSelection = true;
+                    }
+
+
+                    /* Groupe */
+
+                    if (
+                        clickedGroup &&
+                        selectedZone === clickedGroup
+                    ) {
+
+                        sameSelection = true;
+                    }
+
+
+                    /* =========================
+                       DÉVERROUILLAGE
+                    ========================= */
+
+                    if (sameSelection) {
+
+                        /*
+                           On supprime absolument toutes
+                           les classes visuelles.
+                        */
+
+                        document
+                            .querySelectorAll(".body-zone")
+                            .forEach(bodyZone => {
+
+                                bodyZone.classList.remove(
+                                    "selected"
+                                );
+
+                                bodyZone.classList.remove(
+                                    "hover-group"
+                                );
+
+                            });
+
+
+                        selectedGroup = null;
+                        selectedZone = null;
+
+
+                        updatePanel();
+
+
+                        /*
+                           IMPORTANT POUR MOBILE :
+                           on force le navigateur à perdre
+                           son état tactile.
+                        */
+
+                        this.blur();
+
+
+                        /*
+                           Petit délai pour éviter que
+                           le téléphone conserve le hover.
+                        */
+
+                        setTimeout(() => {
+
+                            document
+                                .querySelectorAll(".body-zone")
+                                .forEach(bodyZone => {
+
+                                    bodyZone.classList.remove(
+                                        "selected"
+                                    );
+
+                                    bodyZone.classList.remove(
+                                        "hover-group"
+                                    );
+
+                                });
+
+                        }, 50);
+
+
+                        return;
+                    }
+
+
+                    /* =========================
+                       NOUVELLE SÉLECTION
+                    ========================= */
+
+                    document
+                        .querySelectorAll(".body-zone")
+                        .forEach(bodyZone => {
+
+                            bodyZone.classList.remove(
+                                "selected"
+                            );
+
+                            bodyZone.classList.remove(
+                                "hover-group"
+                            );
+
+                        });
+
+
+                    selectedGroup = null;
+                    selectedZone = null;
+                }
+
+
+                /* =========================
+                   ZONE INDIVIDUELLE
+                ========================= */
+
+                if (!clickedGroup) {
+
+                    this.classList.add("selected");
+
+                    selectedGroup = this;
+                    selectedZone = clickedZone;
+
+                    if (clickedZone) {
+                        showExercises(clickedZone);
+                    }
+
+                    return;
+                }
+
+
+                /* =========================
+                   GROUPE
+                ========================= */
+
+                getGroupZones(clickedGroup)
+                    .forEach(groupZone => {
+
+                        groupZone.classList.add(
+                            "selected"
+                        );
+
+                    });
+
+                selectedGroup = clickedGroup;
+                selectedZone = clickedGroup;
+
+                showExercises(clickedGroup);
+            });
+        });
+}
+
+
+/* =========================
+   SCROLL MOBILE
+========================= */
+
+function scrollToExercisesMobile() {
+
+    if (window.innerWidth > 768) {
+        return;
+    }
+
+    const panel =
+        document.getElementById("exercisePanel");
+
+    if (!panel) {
+        return;
+    }
+
+    setTimeout(() => {
+
+        const silhouette =
+            document.querySelector(".body-container");
+
+        if (!silhouette) {
+            return;
+        }
+
+        const silhouetteTop =
+            silhouette.getBoundingClientRect().top +
+            window.scrollY;
+
+        window.scrollTo({
+            top: silhouetteTop - 20,
+            behavior: "smooth"
+        });
+
+    }, 100);
 }
 
 
@@ -260,153 +707,124 @@ if (currentCategory === "mobilite") {
 const exercises = {
 
     /* =========================
-   COU — FACE
-========================= */
+       COU — FACE
+    ========================= */
 
-"Cou face": {
+    "Cou face": {
 
-    "renforcement": [
+        "renforcement": [
 
-        /* =========================
-           COU FACE — DEBOUT
-        ========================= */
+            {
+                title: "Cou debout — flexion cervicale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-debout-flexion-cervicale.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Cou debout — flexion cervicale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-debout-flexion-cervicale.pdf",
-            position: "debout"
-        },
+            {
+                title: "Cou debout — extension cervicale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-debout-extension-cervicale.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Cou debout — extension cervicale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-debout-extension-cervicale.pdf",
-            position: "debout"
-        },
+            {
+                title: "Cou debout — rotation cervicale contrôlée",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-debout-rotation-cervicale.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Cou debout — rotation cervicale contrôlée",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-debout-rotation-cervicale.pdf",
-            position: "debout"
-        },
+            {
+                title: "Cou debout — inclinaison latérale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-debout-inclinaison-laterale.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Cou debout — inclinaison latérale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-debout-inclinaison-laterale.pdf",
-            position: "debout"
-        },
+            {
+                title: "Cou assis — flexion cervicale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-assis-flexion-cervicale.pdf",
+                position: "assis"
+            },
 
+            {
+                title: "Cou assis — extension cervicale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-assis-extension-cervicale.pdf",
+                position: "assis"
+            },
 
-        /* =========================
-           COU FACE — ASSIS
-        ========================= */
+            {
+                title: "Cou assis — rotation cervicale contrôlée",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-assis-rotation-cervicale.pdf",
+                position: "assis"
+            },
 
-        {
-            title: "Cou assis — flexion cervicale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-assis-flexion-cervicale.pdf",
-            position: "assis"
-        },
+            {
+                title: "Cou assis — inclinaison latérale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-assis-inclinaison-laterale.pdf",
+                position: "assis"
+            },
 
-        {
-            title: "Cou assis — extension cervicale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-assis-extension-cervicale.pdf",
-            position: "assis"
-        },
+            {
+                title: "Cou au sol — flexion cervicale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-sol-flexion-cervicale.pdf",
+                position: "sol"
+            },
 
-        {
-            title: "Cou assis — rotation cervicale contrôlée",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-assis-rotation-cervicale.pdf",
-            position: "assis"
-        },
+            {
+                title: "Cou au sol — renforcement cervical isométrique",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-face-sol-renforcement-isometrique.pdf",
+                position: "sol"
+            }
 
-        {
-            title: "Cou assis — inclinaison latérale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-assis-inclinaison-laterale.pdf",
-            position: "assis"
-        },
+        ],
 
+        "etirements": [
 
-        /* =========================
-           COU FACE — AU SOL
-        ========================= */
+            {
+                title: "Étirement du cou debout — inclinaison latérale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-face-debout-inclinaison-laterale.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Cou au sol — flexion cervicale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-sol-flexion-cervicale.pdf",
-            position: "sol"
-        },
+            {
+                title: "Étirement du cou debout — rotation",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-face-debout-rotation.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Cou au sol — renforcement cervical isométrique",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-face-sol-renforcement-isometrique.pdf",
-            position: "sol"
-        }
+            {
+                title: "Étirement du cou assis — inclinaison latérale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-face-assis-inclinaison-laterale.pdf",
+                position: "assis"
+            },
 
-    ],
+            {
+                title: "Étirement du cou assis — rotation",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-face-assis-rotation.pdf",
+                position: "assis"
+            },
 
-    "etirements": [
+            {
+                title: "Étirement du cou au sol — position allongée",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-face-sol.pdf",
+                position: "sol"
+            }
 
-        /* =========================
-           COU FACE — DEBOUT
-        ========================= */
-
-        {
-            title: "Étirement du cou debout — inclinaison latérale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-face-debout-inclinaison-laterale.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Étirement du cou debout — rotation",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-face-debout-rotation.pdf",
-            position: "debout"
-        },
-
-
-        /* =========================
-           COU FACE — ASSIS
-        ========================= */
-
-        {
-            title: "Étirement du cou assis — inclinaison latérale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-face-assis-inclinaison-laterale.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Étirement du cou assis — rotation",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-face-assis-rotation.pdf",
-            position: "assis"
-        },
-
-
-        /* =========================
-           COU FACE — AU SOL
-        ========================= */
-
-        {
-            title: "Étirement du cou au sol — position allongée",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-face-sol.pdf",
-            position: "sol"
-        }
-
-    ]
-
-},
+        ]
+    },
 
 
     /* =========================
@@ -416,10 +834,6 @@ const exercises = {
     "Pectoraux": {
 
         "renforcement": [
-
-            /* =========================
-               PECTORAUX DEBOUT
-            ========================= */
 
             {
                 title: "Pompes contre un mur",
@@ -442,11 +856,6 @@ const exercises = {
                 position: "debout"
             },
 
-
-            /* =========================
-               PECTORAUX ASSIS
-            ========================= */
-
             {
                 title: "Développé assis avec élastique",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
@@ -460,11 +869,6 @@ const exercises = {
                 pdf: "fiches/Ecarte-assis-elastique.pdf",
                 position: "assis"
             },
-
-
-            /* =========================
-               PECTORAUX AU SOL
-            ========================= */
 
             {
                 title: "Développé au sol avec élastique",
@@ -481,9 +885,6 @@ const exercises = {
             }
 
         ],
-            /* =========================
-               Etirements
-            ========================= */
 
         "etirements": [
 
@@ -509,7 +910,6 @@ const exercises = {
             }
 
         ]
-
     },
 
 
@@ -520,10 +920,6 @@ const exercises = {
     "Abdominaux": {
 
         "renforcement": [
-
-            /* =========================
-               ABDOMINAUX DEBOUT
-            ========================= */
 
             {
                 title: "Abdominaux debout — flexion du tronc",
@@ -546,11 +942,6 @@ const exercises = {
                 position: "debout"
             },
 
-
-            /* =========================
-               ABDOMINAUX ASSIS
-            ========================= */
-
             {
                 title: "Abdominaux assis — flexion du tronc",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
@@ -564,11 +955,6 @@ const exercises = {
                 pdf: "fiches/Abdominaux-assis-montee-genou.pdf",
                 position: "assis"
             },
-
-
-            /* =========================
-               ABDOMINAUX AU SOL
-            ========================= */
 
             {
                 title: "Abdominaux au sol — crunch",
@@ -585,9 +971,6 @@ const exercises = {
             }
 
         ],
-       /* =========================
-               Etirements abdo
-            ========================= */
 
         "etirements": [
 
@@ -613,7 +996,6 @@ const exercises = {
             }
 
         ]
-
     },
 
 
@@ -624,10 +1006,6 @@ const exercises = {
     "Obliques": {
 
         "renforcement": [
-
-            /* =========================
-               OBLIQUES DEBOUT
-            ========================= */
 
             {
                 title: "Obliques debout — inclinaison latérale",
@@ -650,11 +1028,6 @@ const exercises = {
                 position: "debout"
             },
 
-
-            /* =========================
-               OBLIQUES ASSIS
-            ========================= */
-
             {
                 title: "Obliques assis — inclinaison latérale",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
@@ -668,11 +1041,6 @@ const exercises = {
                 pdf: "fiches/Obliques-assis-rotation.pdf",
                 position: "assis"
             },
-
-
-            /* =========================
-               OBLIQUES AU SOL
-            ========================= */
 
             {
                 title: "Obliques au sol — gainage latéral",
@@ -689,9 +1057,6 @@ const exercises = {
             }
 
         ],
-            /* =========================
-               Etirements obliques
-            ========================= */
 
         "etirements": [
 
@@ -717,7 +1082,6 @@ const exercises = {
             }
 
         ]
-
     },
 
 
@@ -728,10 +1092,6 @@ const exercises = {
     "Cuisses": {
 
         "renforcement": [
-
-            /* =========================
-               CUISSES DEBOUT
-            ========================= */
 
             {
                 title: "Cuisses debout — squat",
@@ -754,11 +1114,6 @@ const exercises = {
                 position: "debout"
             },
 
-
-            /* =========================
-               CUISSES ASSIS
-            ========================= */
-
             {
                 title: "Cuisses assis — extension de genou",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
@@ -772,11 +1127,6 @@ const exercises = {
                 pdf: "fiches/Cuisses-assis-montee-genou.pdf",
                 position: "assis"
             },
-
-
-            /* =========================
-               CUISSES AU SOL
-            ========================= */
 
             {
                 title: "Cuisses au sol — extension de hanche",
@@ -793,10 +1143,6 @@ const exercises = {
             }
 
         ],
-
-            /* =========================
-               Etirements cuisses
-            ========================= */
 
         "etirements": [
 
@@ -822,7 +1168,6 @@ const exercises = {
             }
 
         ]
-
     },
 
 
@@ -833,10 +1178,6 @@ const exercises = {
     "Tibias": {
 
         "renforcement": [
-
-            /* =========================
-               TIBIAS DEBOUT
-            ========================= */
 
             {
                 title: "Tibias debout — relevé de pointe de pied",
@@ -859,11 +1200,6 @@ const exercises = {
                 position: "debout"
             },
 
-
-            /* =========================
-               TIBIAS ASSIS
-            ========================= */
-
             {
                 title: "Tibias assis — relevé de pointe de pied",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
@@ -877,11 +1213,6 @@ const exercises = {
                 pdf: "fiches/Tibias-assis-flexion-cheville.pdf",
                 position: "assis"
             },
-
-
-            /* =========================
-               TIBIAS AU SOL
-            ========================= */
 
             {
                 title: "Tibias au sol — flexion de cheville",
@@ -899,15 +1230,7 @@ const exercises = {
 
         ],
 
-            /* =========================
-               Etirements Tibias
-            ========================= */
-
         "etirements": [
-
-    /* =========================
-       ÉTIREMENTS TIBIAS DEBOUT
-    ========================= */
 
             {
                 title: "Étirement des tibias debout — flexion de cheville",
@@ -916,22 +1239,12 @@ const exercises = {
                 position: "debout"
             },
 
-
-            /* =========================
-            ÉTIREMENTS TIBIAS ASSIS
-            ========================= */
-
             {
                 title: "Étirement des tibias assis — flexion de cheville",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
                 pdf: "fiches/Etirement-tibias-assis-flexion-cheville.pdf",
                 position: "assis"
             },
-
-
-            /* =========================
-            ÉTIREMENTS TIBIAS AU SOL
-            ========================= */
 
             {
                 title: "Étirement des tibias au sol — flexion de cheville",
@@ -941,7 +1254,6 @@ const exercises = {
             }
 
         ]
-
     },
 
 
@@ -952,10 +1264,6 @@ const exercises = {
     "Épaules": {
 
         "renforcement": [
-
-            /* =========================
-               ÉPAULES DEBOUT
-            ========================= */
 
             {
                 title: "Épaules debout — élévations latérales",
@@ -978,11 +1286,6 @@ const exercises = {
                 position: "debout"
             },
 
-
-            /* =========================
-               ÉPAULES ASSIS
-            ========================= */
-
             {
                 title: "Épaules assis — élévations latérales",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
@@ -1004,11 +1307,6 @@ const exercises = {
                 position: "assis"
             },
 
-
-            /* =========================
-               ÉPAULES AU SOL
-            ========================= */
-
             {
                 title: "Épaules au sol — élévation des bras",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
@@ -1024,13 +1322,10 @@ const exercises = {
             }
 
         ],
-            /* =========================
-               Etirements Epaules
-            ========================= */
 
         "etirements": [
 
-           {
+            {
                 title: "Étirement des épaules debout — bras croisé",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
                 pdf: "fiches/Etirement-epaules-debout.pdf",
@@ -1052,7 +1347,6 @@ const exercises = {
             }
 
         ]
-
     },
 
 
@@ -1063,10 +1357,6 @@ const exercises = {
     "Biceps": {
 
         "renforcement": [
-
-            /* =========================
-               BICEPS DEBOUT
-            ========================= */
 
             {
                 title: "Biceps debout — curl avec élastique",
@@ -1089,11 +1379,6 @@ const exercises = {
                 position: "debout"
             },
 
-
-            /* =========================
-               BICEPS ASSIS
-            ========================= */
-
             {
                 title: "Biceps assis — curl avec élastique",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
@@ -1108,11 +1393,6 @@ const exercises = {
                 position: "assis"
             },
 
-
-            /* =========================
-               BICEPS AU SOL
-            ========================= */
-
             {
                 title: "Biceps au sol — curl avec élastique",
                 video: "https://www.youtube.com/embed/LIEN_VIDEO",
@@ -1121,9 +1401,6 @@ const exercises = {
             }
 
         ],
-            /* =========================
-               Etirements BICEPS
-            ========================= */
 
         "etirements": [
 
@@ -1149,11 +1426,10 @@ const exercises = {
             }
 
         ]
-
     },
 
 
-        /* =========================
+    /* =========================
        AVANT-BRAS
     ========================= */
 
@@ -1243,608 +1519,577 @@ const exercises = {
             }
 
         ]
-
     },
 
+
     /* =========================
-       Titres Vidéos et PDF pour la zone du dos
+       COU — DOS
     ========================= */
 
-    /* =========================
-   COU — DOS
-========================= */
-
-"Cou dos": {
-
-    "renforcement": [
-
-        /* =========================
-           COU DOS — DEBOUT
-        ========================= */
-
-        {
-            title: "Cou debout — rétraction cervicale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-dos-debout-retraction-cervicale.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Cou debout — extension cervicale contrôlée",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-dos-debout-extension-cervicale.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Cou debout — maintien cervical isométrique",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-dos-debout-maintien-isometrique.pdf",
-            position: "debout"
-        },
-
-
-        /* =========================
-           COU DOS — ASSIS
-        ========================= */
-
-        {
-            title: "Cou assis — rétraction cervicale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-dos-assis-retraction-cervicale.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Cou assis — maintien cervical isométrique",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-dos-assis-maintien-isometrique.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Cou assis — extension cervicale contrôlée",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-dos-assis-extension-cervicale.pdf",
-            position: "assis"
-        },
-
-
-        /* =========================
-           COU DOS — AU SOL
-        ========================= */
-
-        {
-            title: "Cou au sol — rétraction cervicale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-dos-sol-retraction-cervicale.pdf",
-            position: "sol"
-        },
-
-        {
-            title: "Cou au sol — maintien cervical isométrique",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Cou-dos-sol-maintien-isometrique.pdf",
-            position: "sol"
-        }
-
-    ],
-
-    "etirements": [
-
-        /* =========================
-           COU DOS — DEBOUT
-        ========================= */
-
-        {
-            title: "Étirement de la nuque debout",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-dos-debout-nuque.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Étirement de la nuque debout — inclinaison latérale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-dos-debout-inclinaison.pdf",
-            position: "debout"
-        },
-
-
-        /* =========================
-           COU DOS — ASSIS
-        ========================= */
-
-        {
-            title: "Étirement de la nuque assis",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-dos-assis-nuque.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Étirement de la nuque assis — inclinaison latérale",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-dos-assis-inclinaison.pdf",
-            position: "assis"
-        },
-
-
-        /* =========================
-           COU DOS — AU SOL
-        ========================= */
-
-        {
-            title: "Étirement de la nuque au sol",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-cou-dos-sol-nuque.pdf",
-            position: "sol"
-        }
-
-    ]
-
-},
-
-/* =========================
-   TRAPÈZES ET RHOMBOÏDES
-========================= */
-
-"Trapèzes et rhomboïdes": {
-
-    "renforcement": [
-
-        {
-            title: "Trapèzes debout — haussements d'épaules",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Trapezes-debout-haussements.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Rhomboïdes debout — tirage avec élastique",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Rhomboides-debout-tirage-elastique.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Trapèzes assis — haussements d'épaules",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Trapezes-assis-haussements.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Rhomboïdes assis — rétraction des omoplates",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Rhomboides-assis-retraction.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Rhomboïdes au sol — rétraction des omoplates",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Rhomboides-sol-retraction.pdf",
-            position: "sol"
-        }
-
-    ],
-
-    "etirements": [
-
-        {
-            title: "Étirement des trapèzes debout",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-trapezes-debout.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Étirement des trapèzes assis",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-trapezes-assis.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Étirement du haut du dos au sol",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-haut-dos-sol.pdf",
-            position: "sol"
-        }
-
-    ]
-
-},
-
-/* =========================
-   LOMBAIRES
-========================= */
-
-"Lombaires": {
-
-    "renforcement": [
-
-        {
-            title: "Lombaires debout — extension du tronc",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Lombaires-debout-extension-tronc.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Lombaires assis — auto-grandissement",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Lombaires-assis-autograndissement.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Lombaires au sol — bird dog",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Lombaires-sol-bird-dog.pdf",
-            position: "sol"
-        },
-
-        {
-            title: "Lombaires au sol — extension du tronc",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Lombaires-sol-extension.pdf",
-            position: "sol"
-        }
-
-    ],
-
-    "etirements": [
-
-        {
-            title: "Étirement des lombaires debout",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-lombaires-debout.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Étirement des lombaires assis",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-lombaires-assis.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Étirement des lombaires au sol",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-lombaires-sol.pdf",
-            position: "sol"
-        }
-
-    ]
-
-},
-
-/* =========================
-   TRICEPS
-========================= */
-
-"Triceps": {
-
-    "renforcement": [
-
-        {
-            title: "Triceps debout — extension avec élastique",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Triceps-debout-extension-elastique.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Triceps debout — extension au-dessus de la tête",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Triceps-debout-extension-tete.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Triceps assis — extension avec élastique",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Triceps-assis-extension-elastique.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Triceps au sol — extension des bras",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Triceps-sol-extension.pdf",
-            position: "sol"
-        }
-
-    ],
-
-    "etirements": [
-
-        {
-            title: "Étirement des triceps debout",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-triceps-debout.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Étirement des triceps assis",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-triceps-assis.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Étirement des triceps au sol",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-triceps-sol.pdf",
-            position: "sol"
-        }
-
-    ]
-
+    "Cou dos": {
+
+        "renforcement": [
+
+            {
+                title: "Cou debout — rétraction cervicale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-dos-debout-retraction-cervicale.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Cou debout — extension cervicale contrôlée",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-dos-debout-extension-cervicale.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Cou debout — maintien cervical isométrique",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-dos-debout-maintien-isometrique.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Cou assis — rétraction cervicale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-dos-assis-retraction-cervicale.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Cou assis — maintien cervical isométrique",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-dos-assis-maintien-isometrique.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Cou assis — extension cervicale contrôlée",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-dos-assis-extension-cervicale.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Cou au sol — rétraction cervicale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-dos-sol-retraction-cervicale.pdf",
+                position: "sol"
+            },
+
+            {
+                title: "Cou au sol — maintien cervical isométrique",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Cou-dos-sol-maintien-isometrique.pdf",
+                position: "sol"
+            }
+
+        ],
+
+        "etirements": [
+
+            {
+                title: "Étirement de la nuque debout",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-dos-debout-nuque.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Étirement de la nuque debout — inclinaison latérale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-dos-debout-inclinaison.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Étirement de la nuque assis",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-dos-assis-nuque.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Étirement de la nuque assis — inclinaison latérale",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-dos-assis-inclinaison.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Étirement de la nuque au sol",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-cou-dos-sol-nuque.pdf",
+                position: "sol"
+            }
+
+        ]
     },
 
+
     /* =========================
-   EXTENSEURS DES AVANT-BRAS
-========================= */
+       TRAPÈZES ET RHOMBOÏDES
+    ========================= */
 
-"Extenseurs des avant-bras": {
+    "Trapèzes et rhomboïdes": {
 
-    "renforcement": [
+        "renforcement": [
 
-        {
-            title: "Extenseurs des avant-bras debout — extension des poignets",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Extenseurs-avant-bras-debout.pdf",
-            position: "debout"
-        },
+            {
+                title: "Trapèzes debout — haussements d'épaules",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Trapezes-debout-haussements.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Extenseurs des avant-bras assis — extension des poignets",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Extenseurs-avant-bras-assis.pdf",
-            position: "assis"
-        },
+            {
+                title: "Rhomboïdes debout — tirage avec élastique",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Rhomboides-debout-tirage-elastique.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Extenseurs des avant-bras au sol — appui sur les mains",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Extenseurs-avant-bras-sol.pdf",
-            position: "sol"
-        }
+            {
+                title: "Trapèzes assis — haussements d'épaules",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Trapezes-assis-haussements.pdf",
+                position: "assis"
+            },
 
-    ],
+            {
+                title: "Rhomboïdes assis — rétraction des omoplates",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Rhomboides-assis-retraction.pdf",
+                position: "assis"
+            },
 
-    "etirements": [
+            {
+                title: "Rhomboïdes au sol — rétraction des omoplates",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Rhomboides-sol-retraction.pdf",
+                position: "sol"
+            }
 
-        {
-            title: "Étirement des extenseurs des avant-bras debout",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-extenseurs-avant-bras-debout.pdf",
-            position: "debout"
-        },
+        ],
 
-        {
-            title: "Étirement des extenseurs des avant-bras assis",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-extenseurs-avant-bras-assis.pdf",
-            position: "assis"
-        },
+        "etirements": [
 
-        {
-            title: "Étirement des extenseurs des avant-bras au sol",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-extenseurs-avant-bras-sol.pdf",
-            position: "sol"
-        }
+            {
+                title: "Étirement des trapèzes debout",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-trapezes-debout.pdf",
+                position: "debout"
+            },
 
-    ]
+            {
+                title: "Étirement des trapèzes assis",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-trapezes-assis.pdf",
+                position: "assis"
+            },
 
-},
+            {
+                title: "Étirement du haut du dos au sol",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-haut-dos-sol.pdf",
+                position: "sol"
+            }
 
-/* =========================
-   FESSIERS
-========================= */
-
-"Fessiers": {
-
-    "renforcement": [
-
-        {
-            title: "Fessiers debout — extension de hanche",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Fessiers-debout-extension-hanche.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Fessiers debout — abduction de hanche",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Fessiers-debout-abduction.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Fessiers assis — contraction isométrique",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Fessiers-assis-contraction.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Fessiers au sol — pont fessier",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Fessiers-sol-pont.pdf",
-            position: "sol"
-        },
-
-        {
-            title: "Fessiers au sol — extension de hanche",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Fessiers-sol-extension-hanche.pdf",
-            position: "sol"
-        }
-
-    ],
-
-    "etirements": [
-
-        {
-            title: "Étirement des fessiers debout",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-fessiers-debout.pdf",
-            position: "debout"
-        },
-
-        {
-            title: "Étirement des fessiers assis",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-fessiers-assis.pdf",
-            position: "assis"
-        },
-
-        {
-            title: "Étirement des fessiers au sol",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-fessiers-sol.pdf",
-            position: "sol"
-        }
-
-    ]
-
+        ]
     },
- /* =========================
-   ISCHIO-JAMBIERS
-========================= */
 
-"Ischio-jambiers": {
 
-    "renforcement": [
+    /* =========================
+       LOMBAIRES
+    ========================= */
 
-        {
-            title: "Ischio-jambiers debout — flexion du genou",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Ischio-debout-flexion-genou.pdf",
-            position: "debout"
-        },
+    "Lombaires": {
 
-        {
-            title: "Ischio-jambiers debout — extension de hanche",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Ischio-debout-extension-hanche.pdf",
-            position: "debout"
-        },
+        "renforcement": [
 
-        {
-            title: "Ischio-jambiers assis — flexion du genou",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Ischio-assis-flexion-genou.pdf",
-            position: "assis"
-        },
+            {
+                title: "Lombaires debout — extension du tronc",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Lombaires-debout-extension-tronc.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Ischio-jambiers au sol — pont fessier",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Ischio-sol-pont-fessier.pdf",
-            position: "sol"
-        }
+            {
+                title: "Lombaires assis — auto-grandissement",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Lombaires-assis-autograndissement.pdf",
+                position: "assis"
+            },
 
-    ],
+            {
+                title: "Lombaires au sol — bird dog",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Lombaires-sol-bird-dog.pdf",
+                position: "sol"
+            },
 
-    "etirements": [
+            {
+                title: "Lombaires au sol — extension du tronc",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Lombaires-sol-extension.pdf",
+                position: "sol"
+            }
 
-        {
-            title: "Étirement des ischio-jambiers debout",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-ischio-debout.pdf",
-            position: "debout"
-        },
+        ],
 
-        {
-            title: "Étirement des ischio-jambiers assis",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-ischio-assis.pdf",
-            position: "assis"
-        },
+        "etirements": [
 
-        {
-            title: "Étirement des ischio-jambiers au sol",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-ischio-sol.pdf",
-            position: "sol"
-        }
+            {
+                title: "Étirement des lombaires debout",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-lombaires-debout.pdf",
+                position: "debout"
+            },
 
-    ]
+            {
+                title: "Étirement des lombaires assis",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-lombaires-assis.pdf",
+                position: "assis"
+            },
 
-},
+            {
+                title: "Étirement des lombaires au sol",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-lombaires-sol.pdf",
+                position: "sol"
+            }
 
-/* =========================
-   MOLLETS
-========================= */
+        ]
+    },
 
-"Mollets": {
 
-    "renforcement": [
+    /* =========================
+       TRICEPS
+    ========================= */
 
-        {
-            title: "Mollets debout — montée sur la pointe des pieds",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Mollets-debout-montees-pointes.pdf",
-            position: "debout"
-        },
+    "Triceps": {
 
-        {
-            title: "Mollets debout — montée sur une jambe",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Mollets-debout-une-jambe.pdf",
-            position: "debout"
-        },
+        "renforcement": [
 
-        {
-            title: "Mollets assis — extension de cheville",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Mollets-assis-extension-cheville.pdf",
-            position: "assis"
-        },
+            {
+                title: "Triceps debout — extension avec élastique",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Triceps-debout-extension-elastique.pdf",
+                position: "debout"
+            },
 
-        {
-            title: "Mollets au sol — flexion plantaire avec élastique",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Mollets-sol-elastique.pdf",
-            position: "sol"
-        }
+            {
+                title: "Triceps debout — extension au-dessus de la tête",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Triceps-debout-extension-tete.pdf",
+                position: "debout"
+            },
 
-    ],
+            {
+                title: "Triceps assis — extension avec élastique",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Triceps-assis-extension-elastique.pdf",
+                position: "assis"
+            },
 
-    "etirements": [
+            {
+                title: "Triceps au sol — extension des bras",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Triceps-sol-extension.pdf",
+                position: "sol"
+            }
 
-        {
-            title: "Étirement des mollets debout",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-mollets-debout.pdf",
-            position: "debout"
-        },
+        ],
 
-        {
-            title: "Étirement des mollets assis",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-mollets-assis.pdf",
-            position: "assis"
-        },
+        "etirements": [
 
-        {
-            title: "Étirement des mollets au sol",
-            video: "https://www.youtube.com/embed/LIEN_VIDEO",
-            pdf: "fiches/Etirement-mollets-sol.pdf",
-            position: "sol"
-        }
+            {
+                title: "Étirement des triceps debout",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-triceps-debout.pdf",
+                position: "debout"
+            },
 
-    ]
+            {
+                title: "Étirement des triceps assis",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-triceps-assis.pdf",
+                position: "assis"
+            },
 
-},
+            {
+                title: "Étirement des triceps au sol",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-triceps-sol.pdf",
+                position: "sol"
+            }
+
+        ]
+    },
+
+
+    /* =========================
+       EXTENSEURS DES AVANT-BRAS
+    ========================= */
+
+    "Extenseurs des avant-bras": {
+
+        "renforcement": [
+
+            {
+                title: "Extenseurs des avant-bras debout — extension des poignets",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Extenseurs-avant-bras-debout.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Extenseurs des avant-bras assis — extension des poignets",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Extenseurs-avant-bras-assis.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Extenseurs des avant-bras au sol — appui sur les mains",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Extenseurs-avant-bras-sol.pdf",
+                position: "sol"
+            }
+
+        ],
+
+        "etirements": [
+
+            {
+                title: "Étirement des extenseurs des avant-bras debout",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-extenseurs-avant-bras-debout.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Étirement des extenseurs des avant-bras assis",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-extenseurs-avant-bras-assis.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Étirement des extenseurs des avant-bras au sol",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-extenseurs-avant-bras-sol.pdf",
+                position: "sol"
+            }
+
+        ]
+    },
+
+
+    /* =========================
+       FESSIERS
+    ========================= */
+
+    "Fessiers": {
+
+        "renforcement": [
+
+            {
+                title: "Fessiers debout — extension de hanche",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Fessiers-debout-extension-hanche.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Fessiers debout — abduction de hanche",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Fessiers-debout-abduction.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Fessiers assis — contraction isométrique",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Fessiers-assis-contraction.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Fessiers au sol — pont fessier",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Fessiers-sol-pont.pdf",
+                position: "sol"
+            },
+
+            {
+                title: "Fessiers au sol — extension de hanche",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Fessiers-sol-extension-hanche.pdf",
+                position: "sol"
+            }
+
+        ],
+
+        "etirements": [
+
+            {
+                title: "Étirement des fessiers debout",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-fessiers-debout.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Étirement des fessiers assis",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-fessiers-assis.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Étirement des fessiers au sol",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-fessiers-sol.pdf",
+                position: "sol"
+            }
+
+        ]
+    },
+
+
+    /* =========================
+       ISCHIO-JAMBIERS
+    ========================= */
+
+    "Ischio-jambiers": {
+
+        "renforcement": [
+
+            {
+                title: "Ischio-jambiers debout — flexion du genou",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Ischio-debout-flexion-genou.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Ischio-jambiers debout — extension de hanche",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Ischio-debout-extension-hanche.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Ischio-jambiers assis — flexion du genou",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Ischio-assis-flexion-genou.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Ischio-jambiers au sol — pont fessier",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Ischio-sol-pont-fessier.pdf",
+                position: "sol"
+            }
+
+        ],
+
+        "etirements": [
+
+            {
+                title: "Étirement des ischio-jambiers debout",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-ischio-debout.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Étirement des ischio-jambiers assis",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-ischio-assis.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Étirement des ischio-jambiers au sol",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-ischio-sol.pdf",
+                position: "sol"
+            }
+
+        ]
+    },
+
+
+    /* =========================
+       MOLLETS
+    ========================= */
+
+    "Mollets": {
+
+        "renforcement": [
+
+            {
+                title: "Mollets debout — montée sur la pointe des pieds",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Mollets-debout-montees-pointes.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Mollets debout — montée sur une jambe",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Mollets-debout-une-jambe.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Mollets assis — extension de cheville",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Mollets-assis-extension-cheville.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Mollets au sol — flexion plantaire avec élastique",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Mollets-sol-elastique.pdf",
+                position: "sol"
+            }
+
+        ],
+
+        "etirements": [
+
+            {
+                title: "Étirement des mollets debout",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-mollets-debout.pdf",
+                position: "debout"
+            },
+
+            {
+                title: "Étirement des mollets assis",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-mollets-assis.pdf",
+                position: "assis"
+            },
+
+            {
+                title: "Étirement des mollets au sol",
+                video: "https://www.youtube.com/embed/LIEN_VIDEO",
+                pdf: "fiches/Etirement-mollets-sol.pdf",
+                position: "sol"
+            }
+
+        ]
+    },
+
 
     /* =========================
        DORSAUX
@@ -1922,7 +2167,6 @@ const exercises = {
             }
 
         ]
-
     }
 
 };
@@ -1930,31 +2174,71 @@ const exercises = {
 
 /* =========================
    AFFICHAGE EXERCICES
-   ACCORDÉON
 ========================= */
 
 function showExercises(zone) {
 
-    /* Mobilité : ne pas modifier le message */
-    if (currentCategory === "mobilite") {
+    const panel =
+        document.getElementById("exercisePanel");
+
+    if (!panel) {
         return;
     }
 
-    const panel = document.getElementById("exercisePanel");
+
+    /* =========================
+       MOBILITÉ
+    ========================= */
+
+    if (currentCategory === "mobilite") {
+
+        showMobilityMessage();
+
+        return;
+    }
+
+
+    /* =========================
+       SÉCURITÉ
+    ========================= */
+
+    if (
+        currentCategory === null ||
+        currentPosition === null ||
+        currentView === null
+    ) {
+
+        updatePanel();
+
+        return;
+    }
+
+
+    /* =========================
+       RECHERCHE DES EXERCICES
+    ========================= */
 
     const categoryExercises =
         (exercises[zone]?.[currentCategory] || [])
-        .filter(exercise => exercise.position === currentPosition);
+            .filter(exercise =>
+                exercise.position === currentPosition
+            );
+
 
     let html = `
         <h2>${zone}</h2>
 
         <p>
             <strong>Catégorie :</strong>
-            ${currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1)}
+            ${currentCategory.charAt(0).toUpperCase()
+                + currentCategory.slice(1)}
         </p>
     `;
 
+
+    /* =========================
+       AUCUN EXERCICE
+    ========================= */
 
     if (categoryExercises.length === 0) {
 
@@ -1966,21 +2250,25 @@ function showExercises(zone) {
 
     } else {
 
-        categoryExercises.forEach((exercise, index) => {
+        categoryExercises.forEach(exercise => {
 
             html += `
                 <div class="accordion-item">
 
                     <button
                         class="accordion-title"
-                        onclick="toggleExercise(this)">
+                        onclick="toggleExercise(this)"
+                    >
 
                         <span>▶</span>
                         ${exercise.title}
 
                     </button>
 
-                    <div class="accordion-content">
+                    <div
+                        class="accordion-content"
+                        style="display: none;"
+                    >
 
                         <iframe
                             width="100%"
@@ -1994,7 +2282,8 @@ function showExercises(zone) {
                         <a
                             href="${exercise.pdf}"
                             target="_blank"
-                            class="pdf-link">
+                            class="pdf-link"
+                        >
                             📄 Voir la fiche de l'exercice en PDF
                         </a>
 
@@ -2002,26 +2291,29 @@ function showExercises(zone) {
 
                 </div>
             `;
-
         });
-
     }
 
 
     panel.innerHTML = html;
 
-    /* Scroll automatique uniquement sur mobile */
+
+    /* =========================
+       SCROLL MOBILE
+    ========================= */
+
     scrollToExercisesMobile();
 }
 
 
 /* =========================
-   OUVRIR / FERMER EXERCICE
+   ACCORDÉON
 ========================= */
 
 function toggleExercise(button) {
 
-    const item = button.parentElement;
+    const item =
+        button.parentElement;
 
     const content =
         item.querySelector(".accordion-content");
@@ -2030,8 +2322,6 @@ function toggleExercise(button) {
         item.classList.contains("open");
 
 
-    /* Fermer tous les exercices */
-
     document
         .querySelectorAll(".accordion-item")
         .forEach(otherItem => {
@@ -2039,23 +2329,24 @@ function toggleExercise(button) {
             otherItem.classList.remove("open");
 
             const otherContent =
-                otherItem.querySelector(".accordion-content");
+                otherItem.querySelector(
+                    ".accordion-content"
+                );
 
             if (otherContent) {
                 otherContent.style.display = "none";
             }
 
             const arrow =
-                otherItem.querySelector(".accordion-title span");
+                otherItem.querySelector(
+                    ".accordion-title span"
+                );
 
             if (arrow) {
                 arrow.textContent = "▶";
             }
-
         });
 
-
-    /* Ouvrir celui qui vient d'être cliqué */
 
     if (!isOpen) {
 
@@ -2069,19 +2360,22 @@ function toggleExercise(button) {
         if (arrow) {
             arrow.textContent = "▼";
         }
-
     }
 }
 
 
 /* =========================
-   PANNEAU
+   PANNEAU PAR DÉFAUT
 ========================= */
 
 function updatePanel() {
 
     const panel =
         document.getElementById("exercisePanel");
+
+    if (!panel) {
+        return;
+    }
 
     panel.innerHTML = `
 
@@ -2094,480 +2388,68 @@ function updatePanel() {
 
         <p>
             <strong>Programme sélectionné :</strong>
-            ${currentCategory
-                ? currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1)
-                : "Aucun"}
+            ${
+                currentCategory
+                    ? currentCategory.charAt(0).toUpperCase()
+                        + currentCategory.slice(1)
+                    : "Aucun"
+            }
         </p>
 
         <p>
             <strong>Position :</strong>
-            ${currentPosition
-                ? currentPosition.charAt(0).toUpperCase() + currentPosition.slice(1)
-                : "Aucune"}
+            ${
+                currentPosition
+                    ? currentPosition.charAt(0).toUpperCase()
+                        + currentPosition.slice(1)
+                    : "Aucune"
+            }
+        </p>
+
+        <p>
+            <strong>Vue :</strong>
+            ${
+                currentView === "front"
+                    ? "Face"
+                    : currentView === "back"
+                        ? "Dos"
+                        : "Aucune"
+            }
         </p>
     `;
 }
 
 
 /* =========================
-   GROUPES DE ZONES
+   PROGRESSION
 ========================= */
 
-const zoneGroups = {
+function updateProgress() {
 
-    "Biceps": [
-        ".zone-biceps-gauche",
-        ".zone-biceps-droite"
-    ],
+    const progress =
+        document.getElementById("progressIndicator");
 
-    "Triceps": [
-        ".zone-triceps-gauche",
-        ".zone-triceps-droite"
-    ],
-
-    "Dorsaux": [
-        ".zone-dorsal-gauche",
-        ".zone-dorsal-droite"
-    ],
-
-    "Trapèzes et rhomboïdes": [
-        ".zone-trapezes-rhomboides"
-    ],
-
-    "Épaules": [
-        ".zone-epaule-gauche",
-        ".zone-epaule-droite",
-        ".zone-epaule-dos-gauche",
-        ".zone-epaule-dos-droite"
-    ],
-
-    "Avant-bras": [
-        ".zone-avant-bras-gauche",
-        ".zone-avant-bras-droite"
-    ],
-
-    "Extenseurs des avant-bras": [
-        ".zone-extenseur-gauche",
-        ".zone-extenseur-droite"
-    ],
-
-    "Cuisses": [
-        ".zone-cuisse-gauche",
-        ".zone-cuisse-droite"
-    ],
-
-    "Tibias": [
-        ".zone-tibia-gauche",
-        ".zone-tibia-droite"
-    ],
-
-    "Obliques": [
-        ".zone-oblique-gauche",
-        ".zone-oblique-droite"
-    ],
-
-    "Ischio-jambiers": [
-        ".zone-ischio-gauche",
-        ".zone-ischio-droite"
-    ],
-
-    "Mollets": [
-        ".zone-mollet-gauche",
-        ".zone-mollet-droite"
-    ],
-
-    "Lombaires": [
-        ".zone-lombaires"
-    ],
-
-    "Fessiers": [
-        ".zone-fessiers"
-    ]
-
-};
-
-
-/* =========================
-   RÉCUPÉRER LES ZONES
-   D'UN GROUPE
-========================= */
-
-function getGroupZones(groupName) {
-
-    const selectors =
-        zoneGroups[groupName] || [];
-
-    return selectors.flatMap(selector =>
-        Array.from(
-            document.querySelectorAll(selector)
-        )
-    );
-}
-
-
-/* =========================
-   TROUVER LE GROUPE
-   D'UNE ZONE
-========================= */
-
-function getZoneGroup(zone) {
-
-    for (const groupName in zoneGroups) {
-
-        const zones =
-            getGroupZones(groupName);
-
-        if (zones.includes(zone)) {
-            return groupName;
-        }
-    }
-
-    return null;
-}
-
-
-/* =========================
-   RÉCUPÉRER LE NOM
-   D'UNE ZONE INDIVIDUELLE
-========================= */
-
-function getZoneName(zone) {
-
-    const onclickValue =
-        zone.getAttribute("onclick");
-
-    if (!onclickValue) {
-        return null;
-    }
-
-    const match =
-        onclickValue.match(
-            /showExercises\('([^']+)'\)/
-        );
-
-    if (match) {
-        return match[1];
-    }
-
-    return null;
-}
-
-/* =========================
-   SCROLL AUTOMATIQUE MOBILE
-========================= */
-
-function scrollToExercisesMobile() {
-
-    /* Uniquement sur mobile */
-    if (window.innerWidth > 768) {
+    if (!progress) {
         return;
     }
 
-    const panel =
-        document.getElementById("exercisePanel");
+    let count = 0;
 
-    if (!panel) {
-        return;
+    if (currentCategory !== null) {
+        count++;
     }
 
-    /*
-       On attend que le panneau soit mis à jour
-       avant de calculer sa position.
-    */
-    setTimeout(() => {
+    if (currentPosition !== null) {
+        count++;
+    }
 
-        /*
-           On fait descendre la page suffisamment
-           pour faire disparaître le haut du site,
-           tout en gardant la silhouette visible.
-        */
+    if (currentView !== null) {
+        count++;
+    }
 
-        const silhouette =
-            document.querySelector(".body-container");
-
-        if (!silhouette) {
-            return;
-        }
-
-        const silhouetteTop =
-            silhouette.getBoundingClientRect().top +
-            window.scrollY;
-
-        /*
-           On place le haut de la silhouette
-           légèrement au-dessus de l'écran.
-           La silhouette reste donc visible,
-           mais le titre et les boutons du haut
-           sortent de l'écran.
-        */
-
-        const scrollPosition =
-            silhouetteTop - 20;
-
-        window.scrollTo({
-            top: scrollPosition,
-            behavior: "smooth"
-        });
-
-    }, 100);
+    progress.textContent = `${count} / 3`;
 }
 
-/* =========================
-   ÉVÉNEMENT SUR CHAQUE ZONE
-========================= */
-
-document
-    .querySelectorAll(".body-zone")
-    .forEach(zone => {
-
-
-    /* =========================
-       SURVOL
-    ========================= */
-
-    zone.addEventListener("mouseenter", function () {
-
-
-        /* Si quelque chose est verrouillé,
-           le survol ne change rien */
-
-        if (selectedZone !== null) {
-            return;
-        }
-
-
-        const groupName =
-            getZoneGroup(this);
-
-
-        /* =========================
-           ZONE EN GROUPE survol
-        ========================= */
-
-        if (groupName) {
-
-            getGroupZones(groupName)
-                .forEach(groupZone => {
-
-                    groupZone.classList.add(
-                        "hover-group"
-                    );
-
-                });
-
-
-            showExercises(groupName);
-
-        }
-
-
-        /* =========================
-           ZONE INDIVIDUELLE
-        ========================= */
-
-        else {
-
-            const zoneName =
-                getZoneName(this);
-
-            if (zoneName) {
-                showExercises(zoneName);
-            }
-
-        }
-
-    });
-
-
-    /* =========================
-       SORTIE DE ZONE
-    ========================= */
-
-    zone.addEventListener("mouseleave", function () {
-
-
-        if (selectedZone !== null) {
-            return;
-        }
-
-
-        const groupName =
-            getZoneGroup(this);
-
-
-        if (groupName) {
-
-            setTimeout(() => {
-
-                const stillHovered =
-                    getGroupZones(groupName)
-                        .some(groupZone =>
-                            groupZone.matches(":hover")
-                        );
-
-
-                if (
-                    !stillHovered &&
-                    selectedZone === null
-                ) {
-
-                    getGroupZones(groupName)
-                        .forEach(groupZone => {
-
-                            groupZone.classList.remove(
-                                "hover-group"
-                            );
-
-                        });
-
-                }
-
-            }, 20);
-
-        }
-
-    });
-
-
-    /* =========================
-       CLIC / VERROUILLAGE
-    ========================= */
-
-    zone.addEventListener("click", function () {
-
-        const groupName =
-            getZoneGroup(this);
-
-
-        const zoneName =
-            getZoneName(this);
-
-
-        /* =========================
-           IDENTIFIANT DE LA SÉLECTION
-        ========================= */
-
-        const clickedSelection =
-            groupName || zoneName;
-
-
-        /* =========================
-           SI ON RECLIQUE SUR
-           LA SÉLECTION ACTUELLE
-        ========================= */
-
-        if (
-            selectedZone === clickedSelection
-        ) {
-
-            document
-                .querySelectorAll(
-                    ".body-zone.selected"
-                )
-                .forEach(zone => {
-
-                    zone.classList.remove(
-                        "selected"
-                    );
-
-                });
-
-
-            selectedGroup = null;
-            selectedZone = null;
-
-
-            return;
-        }
-
-
-        /* =========================
-           NOUVELLE SÉLECTION
-           → EFFACER L'ANCIENNE
-        ========================= */
-
-        document
-            .querySelectorAll(
-                ".body-zone.selected"
-            )
-            .forEach(zone => {
-
-                zone.classList.remove(
-                    "selected"
-                );
-
-            });
-
-
-        document
-            .querySelectorAll(
-                ".body-zone.hover-group"
-            )
-            .forEach(zone => {
-
-                zone.classList.remove(
-                    "hover-group"
-                );
-
-            });
-
-
-        /* =========================
-            ZONE INDIVIDUELLE partie clique
-        ========================= */
-
-        if (!groupName) {
-
-        this.classList.add("selected");
-
-        selectedGroup = this;
-
-        selectedZone = zoneName;
-
-
-        if (zoneName) {
-         showExercises(zoneName);
-        }
-
-        return;
-    }
-
-
-                /* =========================
-           GROUPE bloc clic
-        ========================= */
-
-        getGroupZones(groupName)
-            .forEach(groupZone => {
-
-                groupZone.classList.add(
-                    "selected"
-                );
-
-            });
-
-        selectedGroup = groupName;
-        selectedZone = groupName;
-
-        showExercises(groupName);
-
-    });
-
-}); // ← IMPORTANT : fermeture de querySelectorAll().forEach()
-
-
-/* =========================
-   INITIALISATION
-========================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        resetSelection();
-
-    }
-);
 
 /* =========================
    RÉINITIALISER
@@ -2575,7 +2457,9 @@ document.addEventListener(
 
 function resetSelection() {
 
-    /* Désélectionner toutes les zones */
+    /* =========================
+       DÉSÉLECTIONNER LES ZONES
+    ========================= */
 
     document
         .querySelectorAll(".body-zone.selected")
@@ -2590,13 +2474,21 @@ function resetSelection() {
         });
 
 
-    /* Réinitialiser les sélections */
+    /* =========================
+       RÉINITIALISER LES VARIABLES
+    ========================= */
 
     selectedGroup = null;
     selectedZone = null;
 
+    currentCategory = null;
+    currentPosition = null;
+    currentView = null;
 
-    /* Réinitialiser les boutons */
+
+    /* =========================
+       RÉINITIALISER LES BOUTONS
+    ========================= */
 
     document
         .querySelectorAll(".category-button")
@@ -2617,14 +2509,9 @@ function resetSelection() {
         });
 
 
-    /* Réinitialiser les variables */
-
-    currentCategory = null;
-    currentPosition = null;
-    currentView = null;
-
-
-    /* Cacher toutes les zones */
+    /* =========================
+       CACHER LES ZONES
+    ========================= */
 
     document
         .querySelectorAll(".front-zone")
@@ -2639,34 +2526,41 @@ function resetSelection() {
         });
 
 
-    /* Cacher les deux silhouettes */
+    /* =========================
+       CACHER LES SILHOUETTES
+    ========================= */
 
-    document.getElementById("frontBody").style.display = "none";
-    document.getElementById("backBody").style.display = "none";
+    const frontBody =
+        document.getElementById("frontBody");
+
+    const backBody =
+        document.getElementById("backBody");
+
+    if (frontBody) {
+        frontBody.style.display = "none";
+    }
+
+    if (backBody) {
+        backBody.style.display = "none";
+    }
 
 
-    /* Mettre à jour la progression */
+    /* =========================
+       PROGRESSION
+    ========================= */
 
     updateProgress();
 
 
-    /* Remettre le panneau à zéro */
+    /* =========================
+       PANNEAU
+    ========================= */
 
-    const panel =
-        document.getElementById("exercisePanel");
-
-    panel.innerHTML = `
-        <h2>Choisissez trois options</h2>
-
-        <p>
-            Puis cliquez sur une partie du corps pour afficher
-            les exercices disponibles.
-        </p>
-    `;
+    updatePanel();
 
 
     /* =========================
-       REMONTER EN HAUT DE LA PAGE
+       RETOUR EN HAUT DE PAGE
     ========================= */
 
     window.scrollTo({
@@ -2675,30 +2569,19 @@ function resetSelection() {
     });
 }
 
+
 /* =========================
-   PROGRESSION 0 / 3
+   INITIALISATION
 ========================= */
 
-function updateProgress() {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    const progress =
-        document.getElementById("progressIndicator");
+        initializeZones();
 
-    if (!progress) return;
+        updateProgress();
 
-    let count = 0;
-
-    if (currentCategory !== null) {
-        count++;
+        updatePanel();
     }
-
-    if (currentPosition !== null) {
-        count++;
-    }
-
-    if (currentView !== null) {
-        count++;
-    }
-
-    progress.textContent = `${count} / 3`;
-}
+);
