@@ -1106,7 +1106,7 @@ VISIBILITÉ / SÉLECTION DES ZONES
         width: 420px;
         height: 650px;
 
-        transform: translate(-25px, -25px) scale(0.72);
+        transform: translate(-28px, -25px) scale(0.72);
         transform-origin: top center;
 
         margin-bottom: -180px;
@@ -1126,7 +1126,7 @@ VISIBILITÉ / SÉLECTION DES ZONES
         width: calc(100% - 20px);
         max-width: 370px;
         margin: 0 auto;
-        transform: translateX(-20px);
+        transform: translateX(-25px);
     }
 
     .exercises {
