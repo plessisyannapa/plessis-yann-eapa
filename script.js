@@ -2009,6 +2009,9 @@ function showExercises(zone) {
 
 
     panel.innerHTML = html;
+
+    /* Scroll automatique uniquement sur mobile */
+    scrollToExercisesMobile();
 }
 
 
@@ -2249,6 +2252,65 @@ function getZoneName(zone) {
     return null;
 }
 
+/* =========================
+   SCROLL AUTOMATIQUE MOBILE
+========================= */
+
+function scrollToExercisesMobile() {
+
+    /* Uniquement sur mobile */
+    if (window.innerWidth > 768) {
+        return;
+    }
+
+    const panel =
+        document.getElementById("exercisePanel");
+
+    if (!panel) {
+        return;
+    }
+
+    /*
+       On attend que le panneau soit mis à jour
+       avant de calculer sa position.
+    */
+    setTimeout(() => {
+
+        /*
+           On fait descendre la page suffisamment
+           pour faire disparaître le haut du site,
+           tout en gardant la silhouette visible.
+        */
+
+        const silhouette =
+            document.querySelector(".body-container");
+
+        if (!silhouette) {
+            return;
+        }
+
+        const silhouetteTop =
+            silhouette.getBoundingClientRect().top +
+            window.scrollY;
+
+        /*
+           On place le haut de la silhouette
+           légèrement au-dessus de l'écran.
+           La silhouette reste donc visible,
+           mais le titre et les boutons du haut
+           sortent de l'écran.
+        */
+
+        const scrollPosition =
+            silhouetteTop - 70;
+
+        window.scrollTo({
+            top: scrollPosition,
+            behavior: "smooth"
+        });
+
+    }, 100);
+}
 
 /* =========================
    ÉVÉNEMENT SUR CHAQUE ZONE
@@ -2279,7 +2341,7 @@ document
 
 
         /* =========================
-           ZONE EN GROUPE
+           ZONE EN GROUPE survol
         ========================= */
 
         if (groupName) {
@@ -2451,28 +2513,28 @@ document
 
 
         /* =========================
-           ZONE INDIVIDUELLE
+            ZONE INDIVIDUELLE partie clique
         ========================= */
 
         if (!groupName) {
 
-            this.classList.add("selected");
+        this.classList.add("selected");
 
-            selectedGroup = this;
+        selectedGroup = this;
 
-            selectedZone = zoneName;
+        selectedZone = zoneName;
 
 
-            if (zoneName) {
-                showExercises(zoneName);
-            }
-
-            return;
+        if (zoneName) {
+         showExercises(zoneName);
         }
 
+        return;
+    }
 
-        /* =========================
-           GROUPE
+
+                /* =========================
+           GROUPE bloc clic
         ========================= */
 
         getGroupZones(groupName)
@@ -2484,16 +2546,14 @@ document
 
             });
 
-
         selectedGroup = groupName;
         selectedZone = groupName;
-
 
         showExercises(groupName);
 
     });
 
-});
+}); // ← IMPORTANT : fermeture de querySelectorAll().forEach()
 
 
 /* =========================
