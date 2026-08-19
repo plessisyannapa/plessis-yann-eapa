@@ -2580,8 +2580,7 @@ document.addEventListener(
 
         initializeZones();
 
-        updateProgress();
-
-        updatePanel();
+        /* Tout remettre à zéro au chargement */
+        resetSelection();
     }
 );
