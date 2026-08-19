@@ -2619,50 +2619,60 @@ function resetSelection() {
 
     /* Réinitialiser les variables */
 
-currentCategory = null;
-currentPosition = null;
-currentView = null;
+    currentCategory = null;
+    currentPosition = null;
+    currentView = null;
 
 
-/* Cacher toutes les zones */
+    /* Cacher toutes les zones */
 
-document
-    .querySelectorAll(".front-zone")
-    .forEach(zone => {
-        zone.style.display = "none";
+    document
+        .querySelectorAll(".front-zone")
+        .forEach(zone => {
+            zone.style.display = "none";
+        });
+
+    document
+        .querySelectorAll(".back-zone")
+        .forEach(zone => {
+            zone.style.display = "none";
+        });
+
+
+    /* Cacher les deux silhouettes */
+
+    document.getElementById("frontBody").style.display = "none";
+    document.getElementById("backBody").style.display = "none";
+
+
+    /* Mettre à jour la progression */
+
+    updateProgress();
+
+
+    /* Remettre le panneau à zéro */
+
+    const panel =
+        document.getElementById("exercisePanel");
+
+    panel.innerHTML = `
+        <h2>Choisissez trois options</h2>
+
+        <p>
+            Puis cliquez sur une partie du corps pour afficher
+            les exercices disponibles.
+        </p>
+    `;
+
+
+    /* =========================
+       REMONTER EN HAUT DE LA PAGE
+    ========================= */
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
     });
-
-document
-    .querySelectorAll(".back-zone")
-    .forEach(zone => {
-        zone.style.display = "none";
-    });
-
-
-/* Cacher les deux silhouettes */
-
-document.getElementById("frontBody").style.display = "none";
-document.getElementById("backBody").style.display = "none";
-
-
-/* Mettre à jour la progression */
-
-updateProgress();
-
-
-/* Remettre le panneau à zéro */
-
-const panel =
-    document.getElementById("exercisePanel");
-
-panel.innerHTML = `
-    <h2>Choisissez trois options</h2>
-
-    <p>
-        Puis cliquez sur une partie du corps pour afficher
-        les exercices disponibles.
-    </p>
-`;
 }
 
 /* =========================
