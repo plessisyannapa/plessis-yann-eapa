@@ -285,12 +285,10 @@ h1 {
     width: 35px;
     height: 40px;
 
-    top: 154px;
-    left: 33%;
+    top: 153px;
+    left: 36.5%;
 
-    transform: translateX(-50%);
-
-    transform: rotate(35deg);
+    transform: translateX(-50%) rotate(35deg);
 
     border-radius: 60px 0 0 60px;
 
@@ -303,28 +301,31 @@ h1 {
     width: 35px;
     height: 40px;
 
-    top: 157px;
-    left: 59%;
+    top: 154px;
+    left: 64%;
 
-    transform: translateX(-50%);
+    transform: translateX(-50%) rotate(-35deg);
 
-    transform: rotate(342deg);
-
-    border-radius: 0 70px 70px 0;
+    border-radius: 0 60px 60px 0;
 
     background: rgba(139, 69, 19, 0.3);
     border: 2px solid #8b4513;
 }
+
+
 /* =========================
-   POSITIONS de clique pour pec
+   PROPRIÉTÉS COMMUNES DES ZONES
 ========================= */
+
 .body-zone {
     position: absolute;
     cursor: pointer;
-
-    background: rgba(255, 0, 0, 0.3);
-    border: 2px solid red;
 }
+
+
+/* =========================
+   POSITIONS de clique pour PECTORAUX
+========================= */
 
 .zone-pectoraux {
     width: 85px;
@@ -336,6 +337,9 @@ h1 {
     transform: translateX(-50%);
 
     border-radius: 50%;
+
+    background: rgba(255, 0, 0, 0.3);
+    border: 2px solid red;
 }
 
 /* =========================
@@ -354,35 +358,59 @@ h1 {
 }
 
 /* =========================
-   POSITIONS de clique pour obliques
+   OBLIQUES — FACE
 ========================= */
 
 /* Oblique gauche */
 .zone-oblique-gauche {
-    width: 15px;
-    height: 88px;
+    width: 40px;
+    height: 100px;
 
-    top: 210px;
-    left: 42%;
+    top: 208px;
+    left: 43%;
 
-    transform: translateX(-50%) rotate(0deg);
+    transform: translateX(-50%) rotate(-5deg);
 
-    background: rgba(80, 80, 80, 0.5);
-    border: 2px solid #505050;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #000;
+
+    clip-path: polygon(
+        30% 0%,
+        75% 8%,
+        65% 30%,
+        62% 65%,
+        72% 92%,
+        50% 100%,
+        35% 92%,
+        20% 78%,
+        28% 45%
+    );
 }
 
 /* Oblique droit */
 .zone-oblique-droite {
-    width: 15px;
-    height: 88px;
+    width: 40px;
+    height: 100px;
 
-    top: 210px;
-    left: 58%;
+    top: 208px;
+    left: 57.5%;
 
-    transform: translateX(-50%) rotate(0deg);
+    transform: translateX(-50%) rotate(5deg);
 
-    background: rgba(80, 80, 80, 0.5);
-    border: 2px solid #505050;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #000;
+
+        clip-path: polygon(
+        25% 8%,
+        70% 0%,
+        72% 45%,
+        80% 78%,
+        65% 92%,
+        50% 100%,
+        28% 92%,
+        38% 65%,
+        35% 30%
+    );
 }
 
 /* =========================
@@ -526,40 +554,46 @@ h1 {
     border: 2px solid #9600ff;
 }
 
-/* =========================
-   POSITIONS de clique pour Avant-Bras 
-========================= */
-
 /* Avant-bras gauche */
 .zone-avant-bras-gauche {
-    width: 36px;
+    width: 50px;
     height: 70px;
 
     top: 240px;
     left: 32%;
 
-    transform: translateX(-50%);
-
-    border-radius: 50%;
+    transform: translateX(-50%) rotate(16deg);
 
     background: rgba(255, 80, 150, 0.3);
     border: 2px solid #ff5096;
+
+    clip-path: polygon(
+        20% 0%,
+        80% 15%,
+        65% 100%,
+        35% 100%
+    );
 }
 
 /* Avant-bras droit */
 .zone-avant-bras-droite {
-    width: 36px;
+    width: 50px;
     height: 70px;
 
     top: 240px;
     left: 68%;
 
-    transform: translateX(-50%);
-
-    border-radius: 50%;
+    transform: translateX(-50%) rotate(-16deg);
 
     background: rgba(255, 80, 150, 0.3);
     border: 2px solid #ff5096;
+
+    clip-path: polygon(
+        20% 15%,
+        80% 0%,
+        65% 100%,
+        35% 100%
+    );
 }
 
 /* =========================
@@ -679,34 +713,46 @@ h1 {
    EXTENSEURS AVANT-BRAS — DOS
 ========================= */
 
+/* Extenseur gauche */
 .zone-extenseur-gauche {
-    width: 36px;
-    height: 70px;
+    width: 50px;
+    height: 68px;
 
-    top: 240px;
-    left: 32%;
+    top: 245px;
+    left: 31%;
 
-    transform: translateX(-50%);
-
-    border-radius: 50%;
+    transform: translateX(-50%) rotate(16deg);
 
     background: rgba(255, 80, 150, 0.3);
     border: 2px solid #ff5096;
+
+    clip-path: polygon(
+        20% 0%,
+        80% 0%,
+        65% 100%,
+        35% 100%
+    );
 }
 
+/* Extenseur droit */
 .zone-extenseur-droite {
-    width: 36px;
-    height: 70px;
+    width: 50px;
+    height: 68px;
 
-    top: 240px;
+    top: 245px;
     left: 68%;
 
-    transform: translateX(-50%);
-
-    border-radius: 50%;
+    transform: translateX(-50%) rotate(-16deg);
 
     background: rgba(255, 80, 150, 0.3);
     border: 2px solid #ff5096;
+
+    clip-path: polygon(
+        20% 0%,
+        80% 0%,
+        65% 100%,
+        35% 100%
+    );
 }
 
 /* =========================
@@ -823,35 +869,48 @@ h1 {
    ISCHIO-JAMBIERS — DOS
 ========================= */
 
+/* Ischio gauche */
 .zone-ischio-gauche {
-    width: 55px;
-    height: 75px;
+    width: 58px;
+    height: 81px;
 
-    top: 342px;
-    left: 42%;
+    top: 339px;
+    left: 43%;
 
     transform: translateX(-50%);
 
-    border-radius: 50%;
-
     background: rgba(0, 180, 80, 0.3);
     border: 2px solid #00b450;
+
+    clip-path: polygon(
+        10% 0%,
+        90% 12%,
+        68% 100%,
+        32% 100%
+    );
 }
 
+/* Ischio droit */
 .zone-ischio-droite {
-    width: 55px;
-    height: 75px;
+    width: 58px;
+    height: 81px;
 
-    top: 343px;
-    left: 58%;
+    top: 339px;
+    left: 56%;
 
     transform: translateX(-50%);
 
-    border-radius: 50%;
-
     background: rgba(0, 180, 80, 0.3);
     border: 2px solid #00b450;
+
+    clip-path: polygon(
+        10% 12%,
+        90% 0%,
+        68% 100%,
+        32% 100%
+    );
 }
+
 /* =========================
    MOLLETS — DOS
 ========================= */
