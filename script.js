@@ -2302,7 +2302,7 @@ function scrollToExercisesMobile() {
         */
 
         const scrollPosition =
-            silhouetteTop - 70;
+            silhouetteTop - 20;
 
         window.scrollTo({
             top: scrollPosition,
